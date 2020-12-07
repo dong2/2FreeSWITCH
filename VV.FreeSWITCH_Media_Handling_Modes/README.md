@@ -1,0 +1,4 @@
+###  FreeSWITCH has 3 media handling modes
+
+https://freeswitch.org/confluence/display/FREESWITCH/Proxy+Media
+ 
