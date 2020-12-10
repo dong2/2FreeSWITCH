@@ -5,10 +5,10 @@
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC
 
 ### 2. 公网sturn/trun + webrtc(sipml5)
-vi conf/var.xml
+vi conf/vars.xml
 ```
-  <X-PRE-PROCESS cmd="stun-set" data="external_rtp_ip=stun:182.61.xx.25:3478"/>  
-  <X-PRE-PROCESS cmd="stun-set" data="external_sip_ip=stun:182.61.xx.25:3478"/>  
+    <X-PRE-PROCESS cmd="stun-set" data="external_rtp_ip=stun:182.61.xx.25:3478"/>  
+    <X-PRE-PROCESS cmd="stun-set" data="external_sip_ip=stun:182.61.xx.25:3478"/>  
 ```
 vi conf/sip_profiles/internal.xml (必须)
 ```
