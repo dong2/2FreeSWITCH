@@ -36,3 +36,6 @@ https://howto.lintel.in/how-to-fix-g729a-codec-negotiation-error-in-freeswitch/
 
 https://kovalyshyn.pp.ua/1249.html
  
+
+### chrome
+解决新版chrome在http协议下无法调用摄像头和麦克风的问题
