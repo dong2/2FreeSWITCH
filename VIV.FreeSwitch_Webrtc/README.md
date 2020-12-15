@@ -1,7 +1,7 @@
 ###  百问 FreeSwitch(第三版)
 第 313 页  
 
-### 1. freeswitch + werrtc
+### 1. freeswitch + webrtc
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC
 
 ### 2. 公网sturn/trun + webrtc(sipml5)
@@ -37,5 +37,9 @@ https://howto.lintel.in/how-to-fix-g729a-codec-negotiation-error-in-freeswitch/
 https://kovalyshyn.pp.ua/1249.html
  
 
+### firefox
+sipml5 over ws 可以正常与linphone, zoiper通话
+
 ### chrome
-解决新版chrome在http协议下无法调用摄像头和麦克风的问题
+新版chrome(87.0.4280.88)在http协议下无法调用摄像头和麦克风，需要https(wss).
+https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
