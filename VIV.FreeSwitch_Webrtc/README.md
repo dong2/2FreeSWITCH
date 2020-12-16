@@ -40,6 +40,27 @@ https://kovalyshyn.pp.ua/1249.html
 ### firefox
 sipml5 over ws 可以正常与linphone, zoiper通话
 
-### chrome
-新版chrome(87.0.4280.88)在http协议下无法调用摄像头和麦克风，需要https(wss).
+### chrome over wss
+vi conf/sip_profiles/internal.xml
+```
+  <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
+  <param name="wss-binding" value=":7443"/>
+```
+vi conf/vars.xml
+```
+  <!-- Internal SIP Profile -->
+  <X-PRE-PROCESS cmd="set" data="internal_auth_calls=true"/>
+  <X-PRE-PROCESS cmd="set" data="internal_sip_port=15060"/>
+  <X-PRE-PROCESS cmd="set" data="internal_tls_port=15061"/>
+  <X-PRE-PROCESS cmd="set" data="internal_ssl_enable=true"/>
+
+  <!-- External SIP Profile -->
+  <X-PRE-PROCESS cmd="set" data="external_auth_calls=true"/>
+  <X-PRE-PROCESS cmd="set" data="external_sip_port=15080"/>
+  <X-PRE-PROCESS cmd="set" data="external_tls_port=15081"/>
+  <X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
+```
+
+###
+https://freeswitch.org/confluence/display/FREESWITCH/Debian+8+Jessie
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
