@@ -62,5 +62,6 @@ vi conf/vars.xml
 ```
 
 ###
+https://freeswitch.org/confluence/display/FREESWITCH/SIP+TLS
 https://freeswitch.org/confluence/display/FREESWITCH/Debian+8+Jessie
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
