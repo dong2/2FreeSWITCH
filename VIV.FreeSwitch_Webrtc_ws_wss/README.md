@@ -1,9 +1,9 @@
 ----------------------------------------------------------------------------------  
   
-freeswitch + linphone + sipml5 over ws  
+## I. freeswitch + linphone... + sipml5 over ws  
 
 ### 注意：
-替换1.conf.public.basic整个目录到/usr/local/freeswitch/conf, 重启freeswitch即可  
+FreeSWITCH_Configuration_Parameters仓库下的配置即可,也就是1.conf.public.basic基础目录  
 
 1. Linphone on android 默认的设置里有个AVPF选项必须取消启动
 2. Linphone on windows 设置里的AVPF选项默认是未启动的
@@ -11,7 +11,7 @@ freeswitch + linphone + sipml5 over ws
 
 ----------------------------------------------------------------------------------  
 
-freeswitch + linphone + sipml5 over wss  
+## II. freeswitch + linphone... + sipml5 over wss  
   
 ### 添加配置
 vi conf/vars.xml
