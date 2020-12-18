@@ -1,0 +1,337 @@
+##
+##  README - What is this all about...
+##  Copyright (c) 2000 Yeak Nai Siew, All Rights Reserved. 
+##
+
+##############################################################################
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+##############################################################################
+
+CHANGES
+-------
+v0.1	24 Apr 2000, Initial public release.
+
+
+This README file will explain how to use this handy "kit" to get your
+certificate creation and signing task easier using openssl. You can also
+modify the scripts to suit your needs.
+
+This scripts are particularly designed to handle the web server cert
+generation and user cert generation (S/MIME). Then the script let you
+package the certs into pkcs12 format for you to download to your Netscape
+Communicator to use.
+
+Most of the codes are borrowed from RSE's Mod-SSL package. I only "extend"
+it and probably make it easier to use.
+
+
+Introduction
+------------
+
+It took me 2 full days to be able to come out this kit, and months of
+past experience to understand OpenSSL's operation. I hope this kit can help
+anyone to get things work, up and run immediately. If this helped you,
+please let me know. If this does not help you, let me know so that I can
+improve it.
+
+I use this kit to generate certificates for school and friends to use. It
+happend that recently I only have one Solaris 8 and need to setup
+a secured web-based authentication that used certificate + conventional
+login process. So, the best I can do now is this:
+
+1. Use Apache as core Web Server
+2. Use OpenSSL as core SSL encryption
+3. Use Mod-SSL to glue Apache and OpenSSL
+4. Use PHP3 with LDAP capability to do my programming task
+5. Use Netscape Directory Server 4.11 for backend database purpose (can be
+   PostgreSQL or MySQL)
+
+I won't go into the details of compiling Apache, OpenSSL, Mod-SSL, PHP3
+and LDAPSDK things... the documentation from Apache and Mod-SSL is
+particularly useful. Great job has been done by RSE many months ago!
+
+
+Requirement to run this program
+-------------------------------
+
+1. Unix system that can run "sh". I prefer Linux. But I write this on
+   Solaris 8 due to work requirement. Yes, it runs on Linux.
+
+2. Working openssl 0.9.4 or above. I am using 0.95a. Yes, it runs on Linux.
+
+To test the certification, you need,
+
+1. Web Server that use the server certificate
+
+2. Netscape Communicator 4.5 and above that use the S/MIME certificate.
+   I have tested IE5 on Windows 2000. Also the Outlook Express. Work.
+
+
+How to use it
+-------------
+
+The script is written based on this concept:
+
+1. You have one self-signed Root Certificate (Root CA) that is used to
+   sign everything that you are going to generate.
+2. You can generate the web server cert for Apache+Mod-SSL to use.
+3. You can generate S/MIME key for your Netscape browser to use.
+
+To start, you must create a self-signed Root Certification Authority.
+This is done by running "new-root-ca.sh". Remember the password of this
+key.
+
+You run "new-server-cert.sh" to create a web server's private and
+public key. The script will continue on to enter the ceritificate information.
+We call this "certificate signing request (csr)". The format is x509. You
+need to run "sign-server-cert.sh" to approve and sign with your root key.
+
+You run "new-user-cert.sh" to create a user certificate. You can use this
+to sign and encrypt your email using MS Outlook Express or Netscape browser.
+You need to run "sign-user-cert.sh" to sign it. Finally,  you run "p12.sh"
+to package the private key, signed key, together with CA's Public key into
+a file with ".p12" extension. You can download this to your PC and import in.
+
+I hope the explaination is very straight forward.
+
+Example Usage
+-------------
+
+
+1. Create the self-signed Root CA key
+
+
+# ./new-root-ca.sh 
+No Root CA key round. Generating one
+Generating RSA private key, 1024 bit long modulus
+....++++++
+.............++++++
+e is 65537 (0x10001)
+Enter PEM pass phrase:
+Verifying password - Enter PEM pass phrase:
+
+Self-sign the root CA...
+Using configuration from root-ca.conf
+Enter PEM pass phrase:
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [MY]:
+State or Province Name (full name) [Perak]:
+Locality Name (eg, city) [Sitiawan]:
+Organization Name (eg, company) [My Directory Sdn Bhd]:
+Organizational Unit Name (eg, section) [Certification Services Division]:
+Common Name (eg, MD Root CA) []:MD Root CA
+Email Address []:md-ca@md.com.my
+
+
+
+2. Create the server cert
+
+
+# ./new-server-cert.sh 
+Usage: ./new-server-cert.sh <www.domain.com>
+# ./new-server-cert.sh www.md.com.my
+No www.md.com.my.key round. Generating one
+Generating RSA private key, 1024 bit long modulus
+...++++++
+......++++++
+e is 65537 (0x10001)
+
+Fill in certificate data
+Using configuration from server-cert.conf
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [MY]:
+State or Province Name (full name) [Perak]:    
+Locality Name (eg, city) [Sitiawan]:
+Organization Name (eg, company) [My Directory Sdn Bhd]:
+Organizational Unit Name (eg, section) [Secure Web Server]:
+Common Name (eg, www.domain.com) []:www.md.com.my
+Email Address []:info@md.com.my
+
+You may now run ./sign-server-cert.sh to get it signed
+
+
+
+3. Sign the server cert
+
+
+# ./sign-server-cert.sh 
+Usage: ./sign-server-cert.sh <www.domain.com>
+# ./sign-server-cert.sh www.md.com.my
+CA signing: www.md.com.my.csr -> www.md.com.my.crt:
+Using configuration from ca.config
+Enter PEM pass phrase:
+Check that the request matches the signature
+Signature ok
+The Subjects Distinguished Name is as follows
+countryName           :PRINTABLE:'MY'
+stateOrProvinceName   :PRINTABLE:'Perak'
+localityName          :PRINTABLE:'Sitiawan'
+organizationName      :PRINTABLE:'My Directory Sdn Bhd'
+organizationalUnitName:PRINTABLE:'Secure Web Server'
+commonName            :PRINTABLE:'www.md.com.my'
+emailAddress          :IA5STRING:'info@md.com.my'
+Certificate is to be certified until Apr 24 12:43:27 2001 GMT (365 days)
+Sign the certificate? [y/n]:y
+
+
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+CA verifying: www.md.com.my.crt <-> CA cert
+www.md.com.my.crt: OK
+
+
+
+4. Create the user cert
+
+
+# ./new-user-cert.sh 
+Usage: ./new-user-cert.sh user@email.address.com
+# ./new-user-cert.sh yeak@md.com.my
+No yeak@md.com.my.key round. Generating one
+Generating RSA private key, 1024 bit long modulus
+....................++++++
+............++++++
+e is 65537 (0x10001)
+
+Fill in certificate data
+Using configuration from user-cert.conf
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Common Name (eg, John Doe) []:Yeak Nai Siew    
+Email Address []:yeak@md.com.my
+
+You may now run ./sign-user-cert.sh to get it signed
+
+
+
+5. Sign the user cert
+
+
+# ./sign-user-cert.sh     
+Usage: ./sign-user-cert.sh user@email.address.com
+# ./sign-user-cert.sh yeak@md.com.my
+CA signing: yeak@md.com.my.csr -> yeak@md.com.my.crt:
+Using configuration from ca.config
+Enter PEM pass phrase:
+Check that the request matches the signature
+Signature ok
+The Subjects Distinguished Name is as follows
+commonName            :PRINTABLE:'Yeak Nai Siew'
+emailAddress          :IA5STRING:'yeak@md.com.my'
+Certificate is to be certified until Apr 24 12:53:58 2001 GMT (365 days)
+Sign the certificate? [y/n]:y
+
+
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+CA verifying: yeak@md.com.my.crt <-> CA cert
+yeak@md.com.my.crt: OK
+
+
+
+
+6. Package the user certificate into a single pkcs12 file.
+
+
+
+# ./p12.sh 
+Usage: ./p12.sh user@email.address.com
+# ./p12.sh yeak@md.com.my
+Enter Export Password:
+Verifying password - Enter Export Password:
+
+The certificate for yeak@md.com.my has been collected into a pkcs12 file.
+You can download to your browser and import it.
+
+
+
+7. DONE!
+
+
+
+PROBLEM SOLVING
+---------------
+I am sure you have problem to even using the script. Yes, I actually need
+to improve them first. But see the following first (I know, I know...)
+
+Q. "openssl" not found?
+
+A. You need to have openssl 0.9.4 in your machine. For Red Hat Linux, just
+   install the openssl-xxxx.rpm package. On Solaris, make sure your PATH
+   environment is set correctly. In my case, I have openssl installed in
+   /usr/local/ssl/bin/openssl. So I need to make sure my PATH contain
+   "/usr/local/ssl/bin" and export the this PATH variable.
+
+Q. warning, not much extra random data, consider using the -rand option
+   14044:error:20.......................... PRNG not seeded:md_rand.c
+
+A. In openssl 0.9.5a version, the random seed (PRNG) is important in order to
+   generate any private key. This is a security feature, not a bug. In
+   my kit, I actually include the random-bits that I make up. Do not simply
+   use it! You should try to modify the "new-root-ca.sh" file, look for
+   "-rand random-bits", change it to "-rand /var/adm/wtmpx:/var/adm/messages"
+   in order to get your own unique seed. Note, once you successfully make
+   the openssl run, it will create a $HOME/.rnd file for future use.
+
+   In Linux, you can use "-rand /dev/urandom". If you use
+   "-rand /dev/random", be sure to patiently wait until it start to generate
+   something... :-)
+
+Q. where should I install ssl.ca directory?
+
+A. You can put anywhere. I put inside /usr/local/apache/conf where I have
+   ssl.key, ssl.crt, ssl.csr... around.
+
+Q. I can't important the p12 files to my Mac or PC!
+
+A. Make sure the file is downloaded as "binary". Windows NT 4 might have
+   problem to read the key. Try Windows 2000 or Windows 98.
+
+
+TODO
+----
+Web based certificate management. Need a lot of input from all of you out
+there.
+
+
+CONTACT
+-------
+This is my signature (my vcard!)
+
+Yeak Nai Siew      [NIC:NY628] << Mac OS Forever >> << Linux Forever>>
+(yeak@md.com.my | yeak@mac.com)                  http://www.md.com.my/
+e-certificate      http://www.brainbench.com/transcript.jsp?pid=120196
+ICQ#: 13391181                                Chief Technology Officer
+
