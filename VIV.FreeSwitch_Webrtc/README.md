@@ -153,7 +153,7 @@ drwxr-xr-x 2 root root  4096 12月 18 17:25 ca.db.certs
 
 [root@freeswitch ssl.ca-0.1]# freeswitch -nonat -nonatmap -nosql
 ```
-
+### reference
 1. fs Certificates  
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
 2. freeswitch使用自签证书,配置WSS  
