@@ -24,7 +24,7 @@ ln -sf /usr/local/freeswitch/bin/fs_cli /usr/bin/
 # 
 #freeswitch
 #freeswitch -nc
-#freeswitch -nonat -nonatmap
+#freeswitch -nonat -nonatmap -nosql
 
 #
 #netstat -anp|grep 5060
