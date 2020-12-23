@@ -34,6 +34,8 @@ cd openssl-1.0.1c
 ./config shared --prefix=/usr/local --openssldir=/usr/local/openssl
 make
 make install
+ln -s /usr/local/lib64/libssl.so.1.0.0 /usr/lib64/libssl.so.1.0.0
+ln -s /usr/local/lib64/libcrypto.so.1.0.0 /usr/lib64/libcrypto.so.1.0.0
 
 5. speex
 wget http://downloads.xiph.org/releases/speex/speex-1.2beta3.tar.gz
@@ -62,8 +64,8 @@ cmake --build . --config Release
 cmake --build . --target install --config Release
 cp ./include/libyuv.h /usr/local/include/libyuv/
 
-uninstall:
-cat install_manifest.txt | sudo xargs rm
+# uninstall:
+# cat install_manifest.txt | sudo xargs rm
 
 8. opencore-amr
 //wget https://sourceforge.net/projects/opencore-amr/files/opencore-amr/opencore-amr-0.1.5.tar.gz/download
@@ -130,6 +132,10 @@ make install
 15. doubango
 git clone https://gitee.com/dong2/doubango.git doubango
 cd doubango
+# vi tinySAK/src/tsk_common.h
+typedef uint8_t   uint8;
+typedef uint32_t  uint32;
+
 ./autogen.sh
 ./configure --with-ssl --with-srtp --with-vpx --with-yuv --with-amr --with-speex --with-speexdsp --with-gsm --with-ilbc --with-g729b --with-ffmpeg
 make
@@ -161,6 +167,7 @@ cp -f ./config.xml $PREFIX/sbin/config.xml
 # reference
 https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
 https://github.com/DoubangoTelecom/doubango/blob/master/Building_Source_v2_0.md
+
 
 ```
 
