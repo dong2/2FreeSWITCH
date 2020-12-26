@@ -1,9 +1,8 @@
 ### FreeSwitch_Webrtc2sip_Gateway
 
-```
-sudo yum update
+sudo yum update  
 
-sudo yum install make libtool autoconf subversion git cvs wget libogg-devel gcc gcc-c++ pkgconfig
+sudo yum install make libtool autoconf subversion git cvs wget libogg-devel gcc gcc-c++ pkgconfig  
 
 ```
 1. yasm
@@ -169,8 +168,6 @@ cp -f ./config.xml $PREFIX/sbin/config.xml
 https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
 https://github.com/DoubangoTelecom/doubango/blob/master/Building_Source_v2_0.md
 
-
-```
 
 
 
