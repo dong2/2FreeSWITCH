@@ -165,8 +165,8 @@ cp -f ./config.xml $PREFIX/sbin/config.xml
 ```
 
 # reference
-https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
-https://github.com/DoubangoTelecom/doubango/blob/master/Building_Source_v2_0.md
+1. https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
+2. https://github.com/DoubangoTelecom/doubango/blob/master/Building_Source_v2_0.md
 
 
 
