@@ -1,0 +1,34 @@
+9. SSL certificates
+
+openssl rand -hex 32
+28cafd81849cf4b3de0dbc29df90ad44fcdf410b64c77f3c1b45e60c99b207aa
+
+use-auth-secret
+static-auth-secret=28cafd81849cf4b3de0dbc29df90ad44fcdf410b64c77f3c1b45e60c99b207aa
+
+turnadmin -k -u test -p test123 -r demo
+0xccba8f3a6a025a38eb4a0e795fc92705
+
+
+# 
+cert=/etc/letsencrypt/live/8.134.18.182/cert.pem
+pkey=/etc/letsencrypt/live/8.134.18.182/privkey.pem
+
+# 443 for TURN over TLS, which can bypass firewalls
+tls-listening-port=443
+
+
+cipher-list="ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384"
+
+```
+# Creating an SSL certificate
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install certbot
+
+sudo certbot certonly --standalone --preferred-challenges http --deploy-hook "systemctl restart coturn" -d <YOUR_DOMAIN>
+
+sudo openssl req -x509 -newkey rsa:2048 -keyout /etc/turn_server_pkey.pem -out /etc/turn_server_cert.pem -days 99999 -nodes
+
+turnadmin -a -u test -p test123 -r 8.134.18.182
+

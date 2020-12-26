@@ -1,0 +1,59 @@
+[root@freeswitch ssl.ca-0.1]# cat server.crt server.key > /usr/local/freeswitch/certs/wss.pem
+[root@freeswitch ssl.ca-0.1]# cat server.crt server.key > /usr/local/freeswitch/certs/agent.pem
+[root@freeswitch ssl.ca-0.1]# cat ca.crt > /usr/local/freeswitch/certs/cafile.pem
+[root@freeswitch ssl.ca-0.1]# cat server.crt > /usr/local/freeswitch/certs/dtls-srtp.crt
+
+[root@freeswitch ssl.ca-0.1]# cat server.crt > /usr/local/nginx/conf/server.crt
+[root@freeswitch ssl.ca-0.1]# cat server.key > /usr/local/nginx/conf/server.key
+[root@freeswitch ssl.ca-0.1]# cat ca.crt > /usr/local/nginx/conf/ca.crt
+
+
+nginx:
+ssl_certificate      server.crt;
+ssl_certificate_key  server.key;
+ssl_client_certificate ca.crt;
+
+freeswitch:
+agent.pem  cafile.pem  dtls-srtp.crt  dtls-srtp.pem  wss.pem
+
+
+webrtc2sip:
+<ssl-certificates>
+/opt/webrtc2sip/ssl/priv.pem;
+/opt/webrtc2sip/ssl/pub.pem;
+/opt/webrtc2sip/ssl/ca-cert.pem;
+</ssl-certificates>
+
+
+<ssl-certificates>
+/opt/webrtc2sip/ssl/server.key;
+/opt/webrtc2sip/ssl/server.crt;
+/opt/webrtc2sip/ssl/ca.crt;
+</ssl-certificates>
+
+
+<ssl-certificates>
+/opt/webrtc2sip/ssl/SSL_Priv.pem;
+/opt/webrtc2sip/ssl/SSL_Pub.pem;
+/opt/webrtc2sip/ssl/SSL_CA.pem;
+</ssl-certificates>
+
+
+[root@centos7 ssl]# ls -l
+总用量 36
+-rw-r--r-- 1 root root 2029 12月 23 09:51 ca.crt
+-rw-r--r-- 1 root root 7268 12月 23 09:50 server.crt
+-rw-r--r-- 1 root root 1793 12月 23 09:50 server.csr
+-rw-r--r-- 1 root root 3396 12月 23 10:43 server.key
+-rw-r--r-- 1 root root 4253 12月 23 10:41 server.pfx
+-rw-r--r-- 1 root root 3243 12月 23 10:46 server_pri.key
+-rw-r--r-- 1 root root  800 12月 23 10:45 server_pub.key
+
+
+scp server.* root@8.134.18.182:/opt/webrtc2sip/ssl
+
+scp server.* root@8.134.18.182:/root
+
+scp -r root@8.134.18.182:/opt/webrtc2sip/ssl /home/zhoudd/2
+
+scp SSL_* root@8.134.56.226:/usr/local/nginx/conf

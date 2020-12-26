@@ -1,0 +1,70 @@
+1. Install coturn on CentOS/Ubuntu
+sudo yum install coturn/sudo apt-get install coturn
+
+systemctl stop coturn
+systemctl start coturn
+
+2. simple mode
+turnserver -o -a -f -v --mobility -m 10 --max-bps=100000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
+
+# stop
+ps aux | grep turnserver
+found process id，example：2059
+kill 2059
+
+3. custom config
+cp /etc/coturn/turnserver.conf /etc/coturn/turnserver.conf.bak
+vi /etc/coturn/turnserver.conf
+```
+### add by zhoudd 20201225
+
+# Secure form for password 'qwerty':
+cli-password=qwerty
+
+# Specify the user for the TURN authentification
+user=test:test123
+
+# Further ports that are open for communication
+min-port=10000
+max-port=10050
+
+# Enable verbose logging
+verbose
+
+# Use fingerprint in TURN message
+fingerprint
+
+# Enable long-term credential mechanism
+lt-cred-mech
+```
+
+4. sipml5 ICE Servers:
+[{url:'stun:8.134.18.182:3478'}]
+[{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]
+
+5. firewall open the port
+sudo firewall-cmd --permanent --add-port=3478/tcp
+sudo firewall-cmd --permanent --add-port=3478/udp
+sudo firewall-cmd --permanent --add-port=5349/tcp
+sudo firewall-cmd --permanent --add-port=5349/udp
+sudo firewall-cmd --permanent --add-port=63000-64535/udp
+sudo firewall-cmd --reload
+
+6. Reference
+1) How to set up and configure your own TURN server using Coturn
+https://gabrieltanner.org/blog/turn-server
+
+2) Configure Your Own TURN/STUN Server
+https://www.red5pro.com/docs/server/webrtc/turnstun/#step-by-step-install-on-an-ubuntu-linux-server
+
+3) ICE server set up in Ubuntu (Coturn)
+https://www.codetd.com/en/article/6415507
+
+4) Installation SSL certificates and Coturn for OpenMeetings 5.0.0-M4 on CentOS 7-8.pdf
+
+
+
+
+
+
+

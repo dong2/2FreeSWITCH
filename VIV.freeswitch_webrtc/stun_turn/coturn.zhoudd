@@ -1,0 +1,46 @@
+### add by zhoudd 20201225
+
+# TURN server name and realm
+realm=8.134.18.182
+server-name=8.134.18.182
+
+# Use fingerprint in TURN message
+fingerprint
+
+# IPs the TURN server listens to
+listening-ip=172.19.124.224
+
+# External IP-Address of the TURN server
+external-ip=8.134.18.182
+
+# Main listening port
+listening-port=3478
+
+# Further ports that are open for communication
+min-port=10000
+max-port=10050
+
+# Log file path
+log-file=/var/log/turnserver.log
+
+# Enable verbose logging
+verbose
+
+# Specify the user for the TURN authentification
+user=test:test123
+
+# Enable long-term credential mechanism
+lt-cred-mech
+
+# SSL certificates
+cert=/etc/letsencrypt/live/8.134.18.182/cert.pem
+pkey=/etc/letsencrypt/live/8.134.18.182/privkey.pem
+
+# 443 for TURN over TLS, which can bypass firewalls
+tls-listening-port=443
+
+# openssl rand -hex 32
+# 28cafd81849cf4b3de0dbc29df90ad44fcdf410b64c77f3c1b45e60c99b207aa
+use-auth-secret
+static-auth-secret=28cafd81849cf4b3de0dbc29df90ad44fcdf410b64c77f3c1b45e60c99b207aa
+
