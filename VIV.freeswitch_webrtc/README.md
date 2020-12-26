@@ -1,1 +1,1 @@
-/home/zhoudd/2/2FreeSWITCH/VIV.freeswitch_webrtc/fs/README.md
+2FreeSWITCH/VIV.freeswitch_webrtc/fs/README.md
