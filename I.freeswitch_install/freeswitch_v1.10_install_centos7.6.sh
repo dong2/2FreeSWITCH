@@ -34,6 +34,7 @@ git clone -b v1.10.5 https://gitee.com/dong2/freeswitch.git freeswitch
 cd freeswitch
 ./bootstrap.sh -j
 此时可以编辑配置需要编译的freeswitch模块，可以关闭不需要使用的模块。此处我注释掉了mod_av和mod_signalwire
+vi modules.conf
 ./configure
 此处如果遇到"no usable spandsp"异常时，按照官方指示设置下环境变量，之后重新configure
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
