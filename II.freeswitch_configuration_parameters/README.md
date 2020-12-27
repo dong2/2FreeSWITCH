@@ -46,7 +46,7 @@ vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 　　<param name="listen-ip" value="::"/>  改为 <param name="listen-ip" value="0.0.0.0"/>
 
 7) Configuring RTP port range
-conf\autoload_configs\switch.conf.xml
+conf/autoload_configs/switch.conf.xml
 <!-- RTP port range -->
 <param name="rtp-start-port" value="10000"/>
 <param name="rtp-end-port" value="20000"/>
