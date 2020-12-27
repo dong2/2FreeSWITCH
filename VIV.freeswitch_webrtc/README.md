@@ -159,7 +159,7 @@ sipml5(localhost) over ws 可以正常与linphone通话, sipml5放在异地用ng
 
 2. chrome  
 sipml5 over ws/wss 出现个bug, 经查找资料，新本版chrome, 在http下已没有麦克风和摄像头的操作权限，建议走https(wss)协议,
-但是wss和ws一样会报如下错误，无奈选择加一层webrtc2sip网关，绕过fs内置的webrtc服务器,或者直接信令和媒体都走webrtc2sip，不用freeswitch  
+但是wss和ws一样会报如下错误，无奈选择加一层webrtc2sip网关，绕过fs内置的webrtc服务器, 或者直接信令和媒体都走webrtc2sip, 不用freeswitch  
 [ERR] switch_rtp.c:3185 audio Handshake failure 1  
 [INFO] switch_rtp.c:3186 Changing audio DTLS state from HANDSHAKE to FAIL  
 
