@@ -45,3 +45,5 @@ ln -sf /usr/local/freeswitch/bin/fs_cli /usr/bin/
 #fs_cli
 ```
 
+# 
+# https://freeswitch.org/confluence/display/FREESWITCH/CentOS+7+and+RHEL+7
