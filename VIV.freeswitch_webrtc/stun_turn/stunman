@@ -1,8 +1,8 @@
 1. Install stunserver on CentOS/Ubuntu
 yum -y install gcc
 yum -y install make
-yum -y install boost* # For Boost
-yum -y install openssl* # For OpenSSL
+yum -y install boost-devel # For Boost
+yum -y install openssl-devel # For OpenSSL
 wget  http://www.stunprotocol.org/stunserver-1.2.3.tgz
 tar zxvf stunserver-1.2.3.tgz
 cd stunserver
