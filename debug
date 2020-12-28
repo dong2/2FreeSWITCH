@@ -1,0 +1,15 @@
+scp root@8.134.56.226:/root/file /root
+scp /root/file root@8.134.56.226:/root
+
+scp -r root@8.134.56.226:/root/dir /root
+scp -r /root/dir root@8.134.56.226:/root
+
+cat SSL_Pub.pem SSL_Priv.pem > wss.pem
+cat SSL_Pub.pem SSL_Priv.pem > agent.pem
+cat SSL_CA.pem > cafile.pem
+cat SSL_Pub.pem > dtls-srtp.crt
+
+/usr/local/nginx/sbin/nginx -s quit
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+
+freeswitch -nonat -nonatmap -nosql

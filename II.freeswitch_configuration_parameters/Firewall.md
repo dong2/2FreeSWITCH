@@ -1,1 +1,3 @@
-systemctl stop firewalld.service  (必须配置或者关闭防火墙)
+[root@freeswitch ~]# systemctl stop firewalld.service
+[root@freeswitch ~]# systemctl disable firewalld
+[root@freeswitch ~]# sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux

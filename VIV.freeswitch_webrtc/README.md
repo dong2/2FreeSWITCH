@@ -158,10 +158,10 @@ drwxr-xr-x 2 root root  4096 12月 18 17:25 ca.db.certs
 sipml5(localhost) over ws 可以正常与linphone通话, sipml5放在异地用nginx加载，发现打不开音频设备，创建不了端点，咱不是专业折腾web前端的，直接放弃  
 
 2. chrome  
-sipml5 over ws/wss 出现个bug, 经查找资料，新本版chrome, 在http下已没有麦克风和摄像头的操作权限，建议走https(wss)协议,
-但是wss和ws一样会报如下错误，无奈选择加一层webrtc2sip网关，绕过fs内置的webrtc服务器, 或者直接信令和媒体都走webrtc2sip, 不用freeswitch  
+sipml5 over ws/wss 在freeswitch v1.6版本出现个bug, 换成v1.10.5版就正常了.  
 [ERR] switch_rtp.c:3185 audio Handshake failure 1  
 [INFO] switch_rtp.c:3186 Changing audio DTLS state from HANDSHAKE to FAIL  
+新本版chrome, 在http下已没有麦克风和摄像头的操作权限，建议走https(wss)协议,
 
 
 ### reference
@@ -169,4 +169,6 @@ sipml5 over ws/wss 出现个bug, 经查找资料，新本版chrome, 在http下�
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
 2. freeswitch使用自签证书,配置WSS  
 https://blog.csdn.net/weixin_42275389/article/details/89183536
+3. self-signed-certs.sh
+https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
 
