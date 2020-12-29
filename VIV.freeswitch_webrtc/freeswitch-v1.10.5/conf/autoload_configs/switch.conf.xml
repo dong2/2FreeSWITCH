@@ -148,7 +148,7 @@
 
     <!-- RTP port range -->
     <param name="rtp-start-port" value="10000"/> 
-    <!-- <param name="rtp-end-port" value="10050"/> -->
+    <param name="rtp-end-port" value="10050"/> 
 
     <!-- Test each port to make sure it is not in use by some other process before allocating it to RTP -->
     <!-- <param name="rtp-port-usage-robustness" value="true"/> -->

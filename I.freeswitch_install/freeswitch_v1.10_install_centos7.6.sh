@@ -83,6 +83,9 @@ make -j install
 make -j cd-sounds-install
 make -j cd-moh-install
 
+ln -sf /usr/local/freeswitch/bin/freeswitch /usr/bin/ 
+ln -sf /usr/local/freeswitch/bin/fs_cli /usr/bin/
+
 # 补上mod_signalwire，大多数情况不需要mod_signalwire，不要轻易添加mod_signalwire.
 
 yum install libatomic -y
