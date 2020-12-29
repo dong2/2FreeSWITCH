@@ -59,6 +59,13 @@ cd x264
 make
 make install
 
+git clone https://gitee.com/dong2/libpng.git
+cd libpng
+./configure
+make
+make install
+cp /usr/local/lib/pkgconfig/libpng* /usr/lib64/pkgconfig/
+
 wget https://libav.org/releases/libav-12.3.tar.xz
 tar xf libav-12.3.tar.xz
 cd libav-12.3
@@ -75,6 +82,7 @@ ln -sf /usr/local/lib/pkgconfig/libavutil.pc  /usr/lib64/pkgconfig/libavutil.pc
 ln -sf /usr/local/lib/pkgconfig/libswscale.pc  /usr/lib64/pkgconfig/libswscale.pc
 
 ldconfig
+
 # 然后像上面一样
 ./configure
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig

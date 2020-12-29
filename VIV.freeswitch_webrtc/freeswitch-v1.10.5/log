@@ -1,0 +1,66 @@
+2020-12-29 17:33:53.020404 [NOTICE] switch_channel.c:1118 New Channel sofia/internal/1016@8.134.56.226:15060 [9d07145e-bc63-4244-9a06-efccd51362b1]
+2020-12-29 17:33:53.120405 [INFO] mod_dialplan_xml.c:637 Processing 1016 <1016>->1019 in context default
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(open=true)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-spymap/1016/9d07145e-bc63-4244-9a06-efccd51362b1)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-last_dial/1016/1019)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-last_dial/global/9d07145e-bc63-4244-9a06-efccd51362b1)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 export(RFC2822_DATE=Tue, 29 Dec 2020 17:33:53 +0800)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 export(dialed_extension=1019)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 bind_meta_app(1 b s execute_extension::dx XML features)
+2020-12-29 17:33:53.120405 [INFO] switch_ivr_async.c:4457 Bound B-Leg: *1 execute_extension::dx XML features
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 bind_meta_app(2 b s record_session::/usr/local/freeswitch/recordings/1016.2020-12-29-17-33-53.wav)
+2020-12-29 17:33:53.120405 [INFO] switch_ivr_async.c:4457 Bound B-Leg: *2 record_session::/usr/local/freeswitch/recordings/1016.2020-12-29-17-33-53.wav
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 bind_meta_app(3 b s execute_extension::cf XML features)
+2020-12-29 17:33:53.120405 [INFO] switch_ivr_async.c:4457 Bound B-Leg: *3 execute_extension::cf XML features
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 bind_meta_app(4 b s execute_extension::att_xfer XML features)
+2020-12-29 17:33:53.120405 [INFO] switch_ivr_async.c:4457 Bound B-Leg: *4 execute_extension::att_xfer XML features
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(ringback=%(2000,4000,440,480))
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(transfer_ringback=local_stream://moh)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(call_timeout=30)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(hangup_after_bridge=true)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(continue_on_fail=true)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-call_return/1019/1016)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-last_dial_ext/1019/9d07145e-bc63-4244-9a06-efccd51362b1)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 set(called_party_callgroup=techsupport)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-last_dial_ext/techsupport/9d07145e-bc63-4244-9a06-efccd51362b1)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-last_dial_ext/global/9d07145e-bc63-4244-9a06-efccd51362b1)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 hash(insert/172.19.124.223-last_dial/techsupport/9d07145e-bc63-4244-9a06-efccd51362b1)
+EXECUTE [depth=0] sofia/internal/1016@8.134.56.226:15060 bridge(user/1019@172.19.124.223)
+2020-12-29 17:33:53.120405 [NOTICE] switch_channel.c:1118 New Channel sofia/internal/1019@10.169.111.182:42864 [119c90b9-b0c9-4cd4-b97a-8ebcaaa7f915]
+2020-12-29 17:33:53.680405 [NOTICE] sofia.c:7437 Ring-Ready sofia/internal/1019@10.169.111.182:42864!
+2020-12-29 17:33:53.700406 [INFO] switch_ivr_originate.c:1275 Sending early media
+2020-12-29 17:33:53.700406 [WARNING] switch_core_media.c:4254 NO candidate ACL defined, Defaulting to wan.auto
+2020-12-29 17:33:53.700406 [WARNING] switch_core_media.c:4254 NO candidate ACL defined, Defaulting to wan.auto
+2020-12-29 17:33:53.700406 [INFO] switch_core_media.c:8845 Activating Audio ICE
+2020-12-29 17:33:53.700406 [NOTICE] switch_rtp.c:4952 Activating RTP audio ICE: wiYE:qctgFQUE06fdKhHE 172.16.104.19:54728
+2020-12-29 17:33:53.700406 [INFO] switch_core_media.c:8896 Skipping RTCP ICE (Same as RTP)
+2020-12-29 17:33:53.700406 [INFO] switch_rtp.c:3764 Activate RTP/RTCP audio DTLS client
+2020-12-29 17:33:53.720404 [INFO] switch_rtp.c:3927 Changing audio DTLS state from OFF to HANDSHAKE
+2020-12-29 17:33:53.720404 [INFO] switch_core_media.c:9539 Activating Video ICE
+2020-12-29 17:33:53.720404 [NOTICE] switch_rtp.c:4952 Activating RTP video ICE: wiYE:vqG9mJFtXMTwmzGC 172.16.104.19:54730
+2020-12-29 17:33:53.720404 [INFO] switch_core_media.c:9576 Activating VIDEO RTCP PORT 54730 interval 1000 mux 1
+2020-12-29 17:33:53.720404 [INFO] switch_core_media.c:9589 Skipping VIDEO RTCP ICE (Same as VIDEO RTP)
+2020-12-29 17:33:53.720404 [INFO] switch_rtp.c:3764 Activate RTP/RTCP video DTLS client
+2020-12-29 17:33:53.720404 [INFO] switch_rtp.c:3927 Changing video DTLS state from OFF to HANDSHAKE
+2020-12-29 17:33:53.720404 [NOTICE] sofia_media.c:92 Pre-Answer sofia/internal/1016@8.134.56.226:15060!
+2020-12-29 17:33:53.840407 [INFO] switch_vpx.c:564 config: vp8
+2020-12-29 17:33:53.840407 [NOTICE] switch_vpx.c:599 VPX encoder reset (WxH/BW) from 0x0/0 to 352x288/3072
+2020-12-29 17:33:53.980405 [NOTICE] switch_rtp.c:1301 Auto Changing video stun/rtp/dtls port from 172.16.104.19:54730 to 202.96.185.36:54730 idx:1
+2020-12-29 17:33:53.980405 [NOTICE] switch_rtp.c:1301 Auto Changing audio stun/rtp/dtls port from 172.16.104.19:54728 to 202.96.185.36:54728 idx:1
+2020-12-29 17:33:54.840408 [NOTICE] sofia.c:8504 Channel [sofia/internal/1019@10.169.111.182:42864] has been answered
+2020-12-29 17:33:54.980404 [INFO] switch_rtp.c:3282 Changing audio DTLS state from HANDSHAKE to SETUP
+2020-12-29 17:33:55.000407 [INFO] switch_rtp.c:3189 audio Fingerprint Verified.
+2020-12-29 17:33:55.000407 [INFO] switch_rtp.c:4254 Activating audio Secure RTP SEND
+2020-12-29 17:33:55.000407 [INFO] switch_rtp.c:4232 Activating audio Secure RTP RECV
+2020-12-29 17:33:55.000407 [INFO] switch_rtp.c:3231 Changing audio DTLS state from SETUP to READY
+2020-12-29 17:33:55.000407 [NOTICE] switch_ivr_originate.c:3794 Channel [sofia/internal/1016@8.134.56.226:15060] has been answered
+2020-12-29 17:33:55.080404 [INFO] switch_rtp.c:3282 Changing video DTLS state from HANDSHAKE to SETUP
+2020-12-29 17:33:55.120403 [INFO] switch_rtp.c:3189 video Fingerprint Verified.
+2020-12-29 17:33:55.120403 [INFO] switch_rtp.c:4254 Activating video Secure RTP SEND
+2020-12-29 17:33:55.120403 [INFO] switch_rtp.c:4232 Activating video Secure RTP RECV
+2020-12-29 17:33:55.120403 [INFO] switch_rtp.c:3231 Changing video DTLS state from SETUP to READY
+2020-12-29 17:33:56.180403 [INFO] switch_rtp.c:7719 Auto Changing audio port from 10.169.111.182:7076 to 112.96.109.140:13575
+2020-12-29 17:33:58.280404 [INFO] switch_core_media.c:9576 Activating VIDEO RTCP PORT 9079 interval 1000 mux -1
+2020-12-29 17:33:59.120403 [INFO] switch_rtp.c:7136 Auto Changing video RTCP port from 10.169.111.182:9079 to 112.96.109.140:29390
+2020-12-29 17:34:00.380404 [INFO] switch_rtp.c:7719 Auto Changing video port from 10.169.111.182:9078 to 112.96.109.140:27467
+

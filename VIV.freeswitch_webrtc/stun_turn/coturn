@@ -5,7 +5,7 @@ systemctl stop coturn
 systemctl start coturn
 
 2. simple mode
-turnserver -o -a -f -v --mobility -m 10 --max-bps=100000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test
 
 # stop
 ps aux | grep turnserver

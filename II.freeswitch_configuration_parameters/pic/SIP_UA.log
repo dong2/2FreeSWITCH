@@ -1,0 +1,264 @@
+root@Ubuntu14:~/intercom/example111# ls -l
+total 1036
+-rwxrwxr-x 1 1000 1000 800000 Oct 28 15:45 8k_1_16.g711a
+drwxrwxr-x 6 1000 1000   4096 Dec 28  2019 _install
+-rwxrwxr-x 1 1000 1000    314 Nov 12 11:30 build.sh
+drwxrwxr-x 2 1000 1000   4096 Nov 16 14:25 doc
+-rwxr-xr-x 1 root root 153448 Nov 16 18:09 example
+drwxrwxr-x 2 1000 1000   4096 Nov 16 14:25 include
+drwxrwxr-x 2 1000 1000   4096 Nov 16 15:58 src
+-rwxrwxr-x 1 1000 1000    147 Nov 18 15:49 test.sh
+-rw-rw-r-- 1 1000 1000  77704 Nov 12 15:30 winamp-intro-1605166246.g711a
+root@Ubuntu14:~/intercom/example111# cat test.sh 
+./example \
+-r sip:8.134.56.226:15060 \
+-u sip:1002@8.134.56.226 \
+-c sip:1002@8.134.56.226:15060 \
+-U 1002 \
+-P 123456  \
+-p 15060 \
+-e 1800 \
+-d
+root@Ubuntu14:~/intercom/example111# ./test.sh 
+SipReg v1.0 up and running
+proxy: sip:8.134.56.226:15060
+fromuser: sip:1002@8.134.56.226
+contact: sip:1002@8.134.56.226:15060
+expiry: 1800
+local port: 15060
+transport: UDP
+username: 1002
+password: [removed]
+r   register
+u   unregister
+i   call
+h   hangup
+a   answer
+q   quit
+f   info
+m   message
+Please input the command:
+
+<<< registrered failure
+<<< registrered successfully
+<<< registrered successfully
+<<< registrered successfully
+<<< message new
+<<< NOTIFY
+<<< (null)
+<<< call invite
+<<< body: v=0
+o=FreeSWITCH 1607305099 1607305100 IN IP4 8.134.56.226
+s=FreeSWITCH
+c=IN IP4 8.134.56.226
+t=0 0
+m=audio 25738 RTP/AVP 102 0 8 103 101
+a=rtpmap:102 opus/48000/2
+a=fmtp:102 useinbandfec=1; maxaveragebitrate=30000; maxplaybackrate=48000; ptime=20; minptime=10; maxptime=40; stereo=1
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=rtpmap:103 telephone-event/48000
+a=fmtp:103 0-16
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-16
+a=ptime:20
+
+
+<<< call ack
+<<< INVITE
+<<< (null)
+call invite remote_audio_ip 8.134.56.226 
+
+call invite remote_audio_port 25738 
+
+call invite localip 172.18.112.52 
+
+conference(remote_ip:8.134.56.226,remote_port:25738,local_ip:172.18.112.52,local_port:22222)
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+
+Sending g711a packet 160 byte
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
+Sending g711a packet 160 byte
+<<< Got pcma packet 160 byte!
+
