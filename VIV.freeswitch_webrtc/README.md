@@ -1,21 +1,144 @@
-----------------------------------------------------------------------------------  
-  
-## I. freeswitch + linphone... + sipml5 over ws  
-
-### 注意：
-FreeSWITCH_Configuration_Parameters仓库下的配置即可,也就是1.conf.public.basic基础目录  
-
-1. Linphone on android 默认的设置里有个AVPF选项必须取消启动
-2. Linphone on windows 设置里的AVPF选项默认是未启动的
-3. 本地sipml5 在firefox http://localhost下与各软电话能正常互拨通话
-
-----------------------------------------------------------------------------------  
-
-## II. freeswitch + linphone... + sipml5 over wss  
-  
-### 添加配置
-vi conf/vars.xml
+# 1. freeswitch快速安装，这在方式很多外设模块都没有
 ```
+yum install -y https://files.freeswitch.org/repo/yum/centos-release/freeswitch-release-repo-0-1.noarch.rpm epel-release
+yum install -y freeswitch-config-vanilla freeswitch-lang-* #freeswitch-sounds-*
+systemctl enable freeswitc
+```
+
+# 2. freeswitch源码安装，可以自定义外设模块
+```
+1. 安装依赖库
+yum install vim git wget lrzsz
+yum install autoconf automake libtool openssl* libtiff* libjpeg*
+
+cd /usr/local/src
+git clone https://gitee.com/dong2/sofia-sip
+cd sofia-sip
+./bootstrap.sh
+./configure
+make
+make install
+
+git clone https://gitee.com/dong2/spandsp
+cd spandsp
+./bootstrap.sh
+./configure
+make
+make install
+
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+
+yum install -y https://files.freeswitch.org/repo/yum/centos-release/freeswitch-release-repo-0-1.noarch.rpm epel-release
+yum install yum-utils
+yum-builddep -y freeswitch --skip-broken
+yum install -y yum-plugin-ovl centos-release-scl rpmdevtools
+
+# 此时如果不需要视频模块直接跳到第4步安装freeswitch即可
+
+
+2. 补上mod_av模块
+wget https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.xz
+tar xf nasm-2.14.02.tar.xz
+cd nasm-2.14.02
+./configure
+make
+make install
+
+git clone https://gitee.com/dong2/x264.git
+# the output directory may be difference depending on the version and date
+cd x264
+./configure --enable-shared --enable-pic
+make
+make install
+
+git clone https://gitee.com/dong2/libpng.git
+cd libpng
+./configure
+make
+make install
+cp /usr/local/lib/pkgconfig/libpng* /usr/lib64/pkgconfig/
+
+wget https://libav.org/releases/libav-12.3.tar.xz
+tar xf libav-12.3.tar.xz
+cd libav-12.3
+# 进入 libav 源码目录下, 将 libavcodec/libx264.c 文件里面的 "x264_bit_depth" 全部替换为 "X264_BIT_DEPTH"，否则编译会报错。
+# scp libx264.c root@8.134.56.226:/usr/local/src/libav-12.3/libavcodec/
+./configure --enable-shared --enable-libx264 --enable-gpl
+make
+make install
+ln -sf /usr/local/lib/pkgconfig/libavcodec.pc  /usr/lib64/pkgconfig/libavcodec.pc
+ln -sf /usr/local/lib/pkgconfig/libavdevice.pc  /usr/lib64/pkgconfig/libavdevice.pc
+ln -sf /usr/local/lib/pkgconfig/libavfilter.pc  /usr/lib64/pkgconfig/libavfilter.pc
+ln -sf /usr/local/lib/pkgconfig/libavformat.pc  /usr/lib64/pkgconfig/libavformat.pc
+ln -sf /usr/local/lib/pkgconfig/libavresample.pc  /usr/lib64/pkgconfig/libavresample.pc
+ln -sf /usr/local/lib/pkgconfig/libavutil.pc  /usr/lib64/pkgconfig/libavutil.pc
+ln -sf /usr/local/lib/pkgconfig/libswscale.pc  /usr/lib64/pkgconfig/libswscale.pc
+
+ldconfig
+
+3. 补上mod_signalwire，大多数情况不需要mod_signalwire，不要轻易添加mod_signalwire.
+
+yum install libatomic -y
+
+wget http://www.cmake.org/files/v3.15/cmake-3.15.2.tar.gz
+tar xf cmake-3.15.2.tar.gz
+cd cmake-3.15.2
+./bootstrap 
+gmake
+make install
+
+git clone https://github.com/signalwire/libks.git
+cd libks
+cmake .
+make
+make install
+
+git clone https://github.com/signalwire/signalwire-c.git
+cd signalwire-c
+cmake .
+make
+make install
+
+
+4. 最后安装freeswitch
+git clone -b v1.10.5 https://gitee.com/dong2/freeswitch.git freeswitch
+cd freeswitch
+# freeswitch v1.10.5 默认配置就可以支持语音会议，视频会议，但是fs对与sip终端的处理需要调整
+# scp switch_rtp.c root@8.134.56.226:/usr/local/src/freeswitch/src
+./bootstrap.sh -j
+# 屏蔽 signalwire
+# vi modules.conf
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+./configure
+make
+make -j install
+
+# 手动上传音频文件，节约时间
+scp freeswitch-sounds-* root@8.134.56.226:/usr/local/src/freeswitch
+
+make -j cd-sounds-install
+make -j cd-moh-install
+
+ln -sf /usr/local/freeswitch/bin/freeswitch /usr/bin/ 
+ln -sf /usr/local/freeswitch/bin/fs_cli /usr/bin/
+
+```
+
+# 3. 最简单配置
+
+1. 首先关闭防火墙
+```
+systemctl stop firewalld.service
+systemctl disable firewalld
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+```
+
+2. 配置freeswitch
+vi /usr/local/freeswitch/conf/vars.xml
+
+```
+  <X-PRE-PROCESS cmd="set" data="default_password=123456"/>
+
   <!-- Internal SIP Profile -->
   <X-PRE-PROCESS cmd="set" data="internal_auth_calls=true"/>
   <X-PRE-PROCESS cmd="set" data="internal_sip_port=15060"/>
@@ -23,152 +146,115 @@ vi conf/vars.xml
   <X-PRE-PROCESS cmd="set" data="internal_ssl_enable=true"/>
 
   <!-- External SIP Profile -->
-  <X-PRE-PROCESS cmd="set" data="external_auth_calls=true"/>
+  <X-PRE-PROCESS cmd="set" data="external_auth_calls=false"/>
   <X-PRE-PROCESS cmd="set" data="external_sip_port=15080"/>
   <X-PRE-PROCESS cmd="set" data="external_tls_port=15081"/>
   <X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
 ```
 
-vi conf/sip_profiles/internal.xml
+vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
 ```
-  <param name="ws-binding"  value=":5066"/>
-
-  <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
-  <param name="wss-binding" value=":7443"/>
+    <param name="ws-binding"  value=":5066"/>
+    <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
+    <param name="wss-binding" value=":7443"/>
 ```
 
-### 添加openssl key
+mv internal-ipv6.xml internal-ipv6.xml.removed
+mv external-ipv6.xml external-ipv6.xml.removed
+
+vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 ```
-[root@freeswitch ssl.ca-0.1]# openssl genrsa -des3 -out ca.key 4096
-Generating RSA private key, 4096 bit long modulus (2 primes)
-.................................................................................................................................................++++
-..................++++
-e is 65537 (0x010001)
-Enter pass phrase for ca.key:
-Verifying - Enter pass phrase for ca.key:
-
-[root@freeswitch ssl.ca-0.1]# ls
-ca.key  COPYING  new-root-ca.sh  new-server-cert.sh  new-user-cert.sh  p12.sh  random-bits  README  sign-server-cert.sh  sign-user-cert.sh  VERSION
-
-[root@freeswitch ssl.ca-0.1]# ./new-root-ca.sh 
-Self-sign the root CA...
-Enter pass phrase for ca.key:
-You are about to be asked to enter information that will be incorporated
-into your certificate request.
-What you are about to enter is what is called a Distinguished Name or a DN.
-There are quite a few fields but you can leave some blank
-For some fields there will be a default value,
-If you enter '.', the field will be left blank.
------
-Country Name (2 letter code) [MY]:CN
-State or Province Name (full name) [Perak]:GD
-Locality Name (eg, city) [Sitiawan]:GZ
-Organization Name (eg, company) [My Directory Sdn Bhd]:ZHD
-Organizational Unit Name (eg, section) [Certification Services Division]:RD
-Common Name (eg, MD Root CA) []:zhoudd
-Email Address []:15019442511@126.com
-
-[root@freeswitch ssl.ca-0.1]# ./new-server-cert.sh  server
-No server.key round. Generating one
-Generating RSA private key, 4096 bit long modulus (2 primes)
-.......................................++++
-..................++++
-e is 65537 (0x010001)
-
-Fill in certificate data
-You are about to be asked to enter information that will be incorporated
-into your certificate request.
-What you are about to enter is what is called a Distinguished Name or a DN.
-There are quite a few fields but you can leave some blank
-For some fields there will be a default value,
-If you enter '.', the field will be left blank.
------
-Country Name (2 letter code) [MY]:CN
-State or Province Name (full name) [Perak]:GD
-Locality Name (eg, city) [Sitiawan]:GZ
-Organization Name (eg, company) [My Directory Sdn Bhd]:ZHD
-Organizational Unit Name (eg, section) [Secure Web Server]:RD
-Common Name (eg, www.domain.com) []:8.134.56.226
-Email Address []:15019442511@126.com
-
-You may now run ./sign-server-cert.sh to get it signed
-
-[root@freeswitch ssl.ca-0.1]# ./sign-server-cert.sh server
-CA signing: server.csr -> server.crt:
-Using configuration from ca.config
-Enter pass phrase for ./ca.key:
-Check that the request matches the signature
-Signature ok
-The Subject's Distinguished Name is as follows
-countryName           :PRINTABLE:'CN'
-stateOrProvinceName   :PRINTABLE:'GD'
-localityName          :PRINTABLE:'GZ'
-organizationName      :PRINTABLE:'ZHD'
-organizationalUnitName:PRINTABLE:'RD'
-commonName            :PRINTABLE:'8.134.56.226'
-emailAddress          :IA5STRING:'15019442511@126.com'
-Certificate is to be certified until Dec 18 09:25:50 2021 GMT (365 days)
-Sign the certificate? [y/n]:y
-
-
-1 out of 1 certificate requests certified, commit? [y/n]y
-Write out database with 1 new entries
-Data Base Updated
-CA verifying: server.crt <-> CA cert
-server.crt: OK
-
-[root@freeswitch ssl.ca-0.1]# ls -l
-总用量 104
--rw-r--r-- 1 root root  2029 12月 18 17:23 ca.crt
-drwxr-xr-x 2 root root  4096 12月 18 17:25 ca.db.certs
--rw-r--r-- 1 root root   106 12月 18 17:25 ca.db.index
--rw-r--r-- 1 root root    21 12月 18 17:25 ca.db.index.attr
--rw-r--r-- 1 root root     3 12月 18 17:25 ca.db.serial
--rw------- 1 root root  3311 12月 18 17:22 ca.key
--rw-r--r-- 1  500  500 17992 4月  24 2000 COPYING
--rwxr-xr-x 1  500  500  1460 12月 18 17:10 new-root-ca.sh
--rwxr-xr-x 1  500  500  1539 12月 18 17:10 new-server-cert.sh
--rwxr-xr-x 1  500  500  1049 12月 18 17:10 new-user-cert.sh
--rwxr-xr-x 1  500  500   984 12月 18 17:10 p12.sh
--rw-r--r-- 1  500  500  1024 4月  23 2000 random-bits
--rw-r--r-- 1  500  500 11503 4月  24 2000 README
--rw-r--r-- 1 root root  7268 12月 18 17:25 server.crt
--rw-r--r-- 1 root root  1793 12月 18 17:24 server.csr
--rw------- 1 root root  3243 12月 18 17:23 server.key
--rwxr-xr-x 1  500  500  2082 12月 18 17:10 sign-server-cert.sh
--rwxr-xr-x 1  500  500  1918 12月 18 17:10 sign-user-cert.sh
--rw-r--r-- 1  500  500    50 4月  24 2000 VERSION
- 
-[root@freeswitch ssl.ca-0.1]# cat server.crt server.key > /usr/local/freeswitch/certs/wss.pem
-[root@freeswitch ssl.ca-0.1]# cat server.crt server.key > /usr/local/freeswitch/certs/agent.pem
-[root@freeswitch ssl.ca-0.1]# cat ca.crt > /usr/local/freeswitch/certs/cafile.pem
-[root@freeswitch ssl.ca-0.1]# cat server.crt > /usr/local/freeswitch/certs/dtls-srtp.crt
-
-[root@freeswitch ssl.ca-0.1]# cat server.crt > /usr/local/nginx/conf/server.crt
-[root@freeswitch ssl.ca-0.1]# cat server.key > /usr/local/nginx/conf/server.key
-[root@freeswitch ssl.ca-0.1]# cat ca.crt > /usr/local/nginx/conf/ca.crt
-
-[root@freeswitch ssl.ca-0.1]# /usr/local/nginx/sbin/nginx -s quit
-[root@freeswitch ssl.ca-0.1]# /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
-
-[root@freeswitch ssl.ca-0.1]# freeswitch -nonat -nonatmap -nosql
+<param name="listen-ip" value="0.0.0.0"/>
 ```
-### 注意：
-1. firefox  
-sipml5(localhost) over ws 可以正常与linphone通话, sipml5放在异地用nginx加载，发现打不开音频设备，创建不了端点，咱不是专业折腾web前端的，直接放弃  
 
-2. chrome  
-sipml5 over ws/wss 在freeswitch v1.6版本出现个bug, 换成v1.10.5版就正常了.  
-[ERR] switch_rtp.c:3185 audio Handshake failure 1  
-[INFO] switch_rtp.c:3186 Changing audio DTLS state from HANDSHAKE to FAIL  
-新本版chrome, 在http下已没有麦克风和摄像头的操作权限，建议走https(wss)协议,
+vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口开得比较多)
+```
+    <!-- RTP port range -->
+    <param name="rtp-start-port" value="10000"/> 
+    <param name="rtp-end-port" value="10050"/> 
+```
 
+vi /usr/local/freeswitch/conf/directory/default.xml
+```
+<param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
 
-### reference
-1. fs Certificates  
-https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
-2. freeswitch使用自签证书,配置WSS  
-https://blog.csdn.net/weixin_42275389/article/details/89183536
-3. self-signed-certs.sh
-https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
+delete ,${verto_contact(${dialed_user}@${dialed_domain})}
+```
+# 拷贝freeswitch密钥
+```
+scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
 
+```
+
+3. 安装nginx
+```
+yum install gcc-c++ pcre pcre-devel zlib zlib-devel #openssl openssl-devel
+wget https://nginx.org/download/nginx-1.14.0.tar.gz
+tar zxf nginx-1.14.0.tar.gz
+cd nginx-1.14.0
+./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
+make
+make install
+```
+
+# 拷贝nginx密钥和配置文件
+```
+scp nginx-1.14.0/nginx.conf root@8.134.56.226:/usr/local/nginx/conf
+scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
+```
+
+# 启动nginx
+```
+/usr/local/nginx/sbin/nginx -s quit
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+/usr/local/nginx/sbin/nginx -s reload
+
+```
+
+4. 安装coturn
+```
+# 直接在线安装
+yum install coturn
+# 启动coturn
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
+(开放端口与freeswitch配置保持同步)
+```
+
+5. 准备sipml5
+```
+cd /home
+git clone https://gitee.com/dong2/sipml5.git
+mv sipml5 sip
+```
+
+6. 启动freeswitch
+freeswitch -nonat -nonatmap -nosql
+
+# 4. 生成openssl密钥
+```
+# https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
+# Uncomment next line to create "privkey.pem" and "SSL_CA.pem" files
+openssl req -days 3650 -out SSL_CA.pem -new -x509
+# Save privkey.pem and SSL_CA.pem
+
+# General Public and private files
+openssl genrsa -out SSL_Priv.pem 1024
+openssl req -key SSL_Priv.pem -new -out ./cert.req
+echo 00 > file.srl
+openssl x509 -req -days 3650 -in cert.req -CA SSL_CA.pem -CAkey privkey.pem -CAserial file.srl -out SSL_Pub.pem
+
+# To convert to DER
+#openssl x509 -outform der -in SSL_CA.pem -out SSL_CA.der
+#openssl x509 -outform der -in SSL_Pub.pem -out SSL_Pub.der
+
+```
+# 我直接用了webrtc2sip项目自带的密钥,最好是自己生成.
+
+7. 注意：
+Linphone on android 默认的设置里有个AVPF选项必须取消启动  
+Linphone on windows 设置里的AVPF选项默认是未启动的  
+
+# 5. reference
+https://freeswitch.org/confluence/display/FREESWITCH/CentOS+7+and+RHEL+7  
+https://blog.csdn.net/jiaojian8063868/article/details/110929209  
+https://zhuanlan.zhihu.com/p/153395654  

@@ -6,4 +6,9 @@
 [root@freeswitch ~]# ./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
 [root@freeswitch ~]# make
 [root@freeswitch ~]# make install
+
+
+/usr/local/nginx/sbin/nginx -s quit
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+/usr/local/nginx/sbin/nginx -s reload
 ```

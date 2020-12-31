@@ -1,52 +1,141 @@
-###  FreeSwitch_Install_Certificates
+----------------------------------------------------------------------------------  
+### 注意：
+1. Linphone on android 默认的设置里有个AVPF选项必须取消启动
+2. Linphone on windows 设置里的AVPF选项默认是未启动的
+
+
+### 添加openssl key
 ```
+[root@freeswitch ssl.ca-0.1]# openssl genrsa -des3 -out ca.key 4096
+Generating RSA private key, 4096 bit long modulus (2 primes)
+.................................................................................................................................................++++
+..................++++
+e is 65537 (0x010001)
+Enter pass phrase for ca.key:
+Verifying - Enter pass phrase for ca.key:
 
-Antonio 发表：
+[root@freeswitch ssl.ca-0.1]# ls
+ca.key  COPYING  new-root-ca.sh  new-server-cert.sh  new-user-cert.sh  p12.sh  random-bits  README  sign-server-cert.sh  sign-user-cert.sh  VERSION
 
-hi,
+[root@freeswitch ssl.ca-0.1]# ./new-root-ca.sh 
+Self-sign the root CA...
+Enter pass phrase for ca.key:
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [MY]:CN
+State or Province Name (full name) [Perak]:GD
+Locality Name (eg, city) [Sitiawan]:GZ
+Organization Name (eg, company) [My Directory Sdn Bhd]:ZHD
+Organizational Unit Name (eg, section) [Certification Services Division]:RD
+Common Name (eg, MD Root CA) []:zhoudd
+Email Address []:15019442511@126.com
 
-after install, the default wss.pem gives error, so to test verto communicator with a custom certificate (i think this info is around here) if testing in local without a public domain to use lets encrypt:
+[root@freeswitch ssl.ca-0.1]# ./new-server-cert.sh  server
+No server.key round. Generating one
+Generating RSA private key, 4096 bit long modulus (2 primes)
+.......................................++++
+..................++++
+e is 65537 (0x010001)
 
-mkdir /root/ssl
+Fill in certificate data
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [MY]:CN
+State or Province Name (full name) [Perak]:GD
+Locality Name (eg, city) [Sitiawan]:GZ
+Organization Name (eg, company) [My Directory Sdn Bhd]:ZHD
+Organizational Unit Name (eg, section) [Secure Web Server]:RD
+Common Name (eg, www.domain.com) []:8.134.56.226
+Email Address []:15019442511@126.com
 
-cd /root/ssl
+You may now run ./sign-server-cert.sh to get it signed
 
-openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+[root@freeswitch ssl.ca-0.1]# ./sign-server-cert.sh server
+CA signing: server.csr -> server.crt:
+Using configuration from ca.config
+Enter pass phrase for ./ca.key:
+Check that the request matches the signature
+Signature ok
+The Subject's Distinguished Name is as follows
+countryName           :PRINTABLE:'CN'
+stateOrProvinceName   :PRINTABLE:'GD'
+localityName          :PRINTABLE:'GZ'
+organizationName      :PRINTABLE:'ZHD'
+organizationalUnitName:PRINTABLE:'RD'
+commonName            :PRINTABLE:'8.134.56.226'
+emailAddress          :IA5STRING:'15019442511@126.com'
+Certificate is to be certified until Dec 18 09:25:50 2021 GMT (365 days)
+Sign the certificate? [y/n]:y
 
-#TIP: put in common name the ip address, so when testing you only have the warning for invalid
 
-cat key.pem certificate.pem > /usr/local/freeswitch/certs/wss.pem
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+CA verifying: server.crt <-> CA cert
+server.crt: OK
 
+[root@freeswitch ssl.ca-0.1]# ls -l
+总用量 104
+-rw-r--r-- 1 root root  2029 12月 18 17:23 ca.crt
+drwxr-xr-x 2 root root  4096 12月 18 17:25 ca.db.certs
+-rw-r--r-- 1 root root   106 12月 18 17:25 ca.db.index
+-rw-r--r-- 1 root root    21 12月 18 17:25 ca.db.index.attr
+-rw-r--r-- 1 root root     3 12月 18 17:25 ca.db.serial
+-rw------- 1 root root  3311 12月 18 17:22 ca.key
+-rw-r--r-- 1  500  500 17992 4月  24 2000 COPYING
+-rwxr-xr-x 1  500  500  1460 12月 18 17:10 new-root-ca.sh
+-rwxr-xr-x 1  500  500  1539 12月 18 17:10 new-server-cert.sh
+-rwxr-xr-x 1  500  500  1049 12月 18 17:10 new-user-cert.sh
+-rwxr-xr-x 1  500  500   984 12月 18 17:10 p12.sh
+-rw-r--r-- 1  500  500  1024 4月  23 2000 random-bits
+-rw-r--r-- 1  500  500 11503 4月  24 2000 README
+-rw-r--r-- 1 root root  7268 12月 18 17:25 server.crt
+-rw-r--r-- 1 root root  1793 12月 18 17:24 server.csr
+-rw------- 1 root root  3243 12月 18 17:23 server.key
+-rwxr-xr-x 1  500  500  2082 12月 18 17:10 sign-server-cert.sh
+-rwxr-xr-x 1  500  500  1918 12月 18 17:10 sign-user-cert.sh
+-rw-r--r-- 1  500  500    50 4月  24 2000 VERSION
  
+[root@freeswitch ssl.ca-0.1]# cat server.crt server.key > /usr/local/freeswitch/certs/wss.pem
+[root@freeswitch ssl.ca-0.1]# cat server.crt server.key > /usr/local/freeswitch/certs/agent.pem
+[root@freeswitch ssl.ca-0.1]# cat ca.crt > /usr/local/freeswitch/certs/cafile.pem
+[root@freeswitch ssl.ca-0.1]# cat server.crt > /usr/local/freeswitch/certs/dtls-srtp.crt
 
-#enable or replace in nginx ssl options for /etc/nginx/sites-enabled/default
+[root@freeswitch ssl.ca-0.1]# cat server.crt > /usr/local/nginx/conf/server.crt
+[root@freeswitch ssl.ca-0.1]# cat server.key > /usr/local/nginx/conf/server.key
+[root@freeswitch ssl.ca-0.1]# cat ca.crt > /usr/local/nginx/conf/ca.crt
 
-ssl_certificate /root/ssl/certificate.pem;
+[root@freeswitch ssl.ca-0.1]# /usr/local/nginx/sbin/nginx -s quit
+[root@freeswitch ssl.ca-0.1]# /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 
-ssl_certificate_key /root/ssl/key.pem;
-
- 
-
-#vc into www,
-
-cp -a /usr/src/freeswitch/html5/verto/verto_communicator/dist/* /var/www/html/
-
- 
-
-hope it helps others (微笑)
-
-    Fran Vicente赞了它
-    2018.02.07
+[root@freeswitch ssl.ca-0.1]# freeswitch -nonat -nonatmap -nosql
 ```
+### 注意：
+1. firefox  
+sipml5(localhost) over ws 可以正常与linphone通话, sipml5放在异地用nginx加载，发现打不开音频设备，创建不了端点，咱不是专业折腾web前端的，直接放弃  
+
+2. chrome  
+sipml5 over ws/wss 在freeswitch v1.6版本出现个bug, 换成v1.10.5版就正常了.  
+[ERR] switch_rtp.c:3185 audio Handshake failure 1  
+[INFO] switch_rtp.c:3186 Changing audio DTLS state from HANDSHAKE to FAIL  
+新本版chrome, 在http下已没有麦克风和摄像头的操作权限，建议走https(wss)协议,
 
 
-notice:
-```
-WebRTC does not work properly with self–signed certs. Chrome will not even tell you why when it refuses them. This is why a proper certificate is essential even when testing WebRTC. See Let's Encrypt above.
-``
-https://freeswitch.org/confluence/display/FREESWITCH/Certificates
-https://freeswitch.org/confluence/display/FREESWITCH/SIP+TLS
-https://freeswitch.org/confluence/display/FREESWITCH/Debian+8+Jessie
+### reference
+1. fs Certificates  
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates
+2. freeswitch使用自签证书,配置WSS  
+https://blog.csdn.net/weixin_42275389/article/details/89183536
+3. self-signed-certs.sh
+https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf
 
-https://www.sslshopper.com/ssl-checker.html
