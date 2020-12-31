@@ -130,7 +130,7 @@ systemctl disable firewalld
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 ```
 
-2. 配置freeswitch
+2. 配置freeswitch  
 vi /usr/local/freeswitch/conf/vars.xml
 
 ```
@@ -151,38 +151,39 @@ vi /usr/local/freeswitch/conf/vars.xml
 
 vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
 ```
-    <param name="ws-binding"  value=":5066"/>
-    <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
-    <param name="wss-binding" value=":7443"/>
+  <param name="ws-binding"  value=":5066"/>
+  <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
+  <param name="wss-binding" value=":7443"/>
 ```
 
-mv internal-ipv6.xml internal-ipv6.xml.removed
-mv external-ipv6.xml external-ipv6.xml.removed
+mv internal-ipv6.xml internal-ipv6.xml.removed  
+mv external-ipv6.xml external-ipv6.xml.removed  
 
 vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 ```
-<param name="listen-ip" value="0.0.0.0"/>
+  <param name="listen-ip" value="0.0.0.0"/>
 ```
 
 vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口开得比较多)
 ```
-    <!-- RTP port range -->
-    <param name="rtp-start-port" value="10000"/> 
-    <param name="rtp-end-port" value="10050"/> 
+  <!-- RTP port range -->
+  <param name="rtp-start-port" value="10000"/> 
+  <param name="rtp-end-port" value="10050"/> 
 ```
 
 vi /usr/local/freeswitch/conf/directory/default.xml
 ```
 <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
 
-delete ,${verto_contact(${dialed_user}@${dialed_domain})}
+# delete ",${verto_contact(${dialed_user}@${dialed_domain})}"
 ```
-# 拷贝freeswitch密钥
+3. 拷贝freeswitch密钥
 ```
 scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
+# freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看VIV.freeswitch_webrtc/ssl.doc/README.md
 ```
 
-3. 安装nginx
+4. 安装nginx
 ```
 yum install gcc-c++ pcre pcre-devel zlib zlib-devel #openssl openssl-devel
 wget https://nginx.org/download/nginx-1.14.0.tar.gz
@@ -202,7 +203,7 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 /usr/local/nginx/sbin/nginx -s reload
 ```
 
-4. 安装coturn
+6. 安装coturn
 ```
 # 直接在线安装
 yum install coturn
@@ -211,15 +212,20 @@ turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max
 (开放端口与freeswitch配置保持同步)
 ```
 
-5. 准备sipml5
+6. 准备sipml5
 ```
 cd /home
 git clone https://gitee.com/dong2/sipml5.git
 mv sipml5 sip
 ```
 
-6. 启动freeswitch
-freeswitch -nonat -nonatmap -nosql
+7. 启动freeswitch
+freeswitch -nonat -nonatmap -nosql  
+
+此时，可以启动浏览器和linphone验证相关功能  
+http://8.134.56.226/sip/call.htm  
+https://8.134.56.226/sip/call.htm  
+
 
 # 4. 生成openssl密钥
 ```
@@ -241,11 +247,11 @@ openssl x509 -req -days 3650 -in cert.req -CA SSL_CA.pem -CAkey privkey.pem -CAs
 # 我直接用了webrtc2sip项目自带的密钥,最好是自己生成.
 ```
 
-7. 注意：  
+# 5. 注意：  
 Linphone on android 默认的设置里有个AVPF选项必须取消启动  
 Linphone on windows 设置里的AVPF选项默认是未启动的  
 
-# 5. reference
+# 6. reference
 https://freeswitch.org/confluence/display/FREESWITCH/CentOS+7+and+RHEL+7  
 https://blog.csdn.net/jiaojian8063868/article/details/110929209  
 https://zhuanlan.zhihu.com/p/153395654  
