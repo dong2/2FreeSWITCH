@@ -35,7 +35,6 @@ yum install -y yum-plugin-ovl centos-release-scl rpmdevtools
 
 # 此时如果不需要视频模块直接跳到第4步安装freeswitch即可
 
-
 2. 补上mod_av模块
 wget https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.xz
 tar xf nasm-2.14.02.tar.xz
@@ -99,7 +98,6 @@ cmake .
 make
 make install
 
-
 4. 最后安装freeswitch
 git clone -b v1.10.5 https://gitee.com/dong2/freeswitch.git freeswitch
 cd freeswitch
@@ -121,7 +119,6 @@ make -j cd-moh-install
 
 ln -sf /usr/local/freeswitch/bin/freeswitch /usr/bin/ 
 ln -sf /usr/local/freeswitch/bin/fs_cli /usr/bin/
-
 ```
 
 # 3. 最简单配置
@@ -183,7 +180,6 @@ delete ,${verto_contact(${dialed_user}@${dialed_domain})}
 # 拷贝freeswitch密钥
 ```
 scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
-
 ```
 
 3. 安装nginx
@@ -204,7 +200,6 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 /usr/local/nginx/sbin/nginx -s quit
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx -s reload
-
 ```
 
 4. 安装coturn
