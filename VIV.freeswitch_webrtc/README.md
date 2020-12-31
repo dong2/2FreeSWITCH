@@ -195,16 +195,12 @@ cd nginx-1.14.0
 ./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
 make
 make install
-```
 
 # 拷贝nginx密钥和配置文件
-```
 scp nginx-1.14.0/nginx.conf root@8.134.56.226:/usr/local/nginx/conf
 scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
-```
 
 # 启动nginx
-```
 /usr/local/nginx/sbin/nginx -s quit
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx -s reload
@@ -247,10 +243,10 @@ openssl x509 -req -days 3650 -in cert.req -CA SSL_CA.pem -CAkey privkey.pem -CAs
 #openssl x509 -outform der -in SSL_CA.pem -out SSL_CA.der
 #openssl x509 -outform der -in SSL_Pub.pem -out SSL_Pub.der
 
-```
 # 我直接用了webrtc2sip项目自带的密钥,最好是自己生成.
+```
 
-7. 注意：
+7. 注意：  
 Linphone on android 默认的设置里有个AVPF选项必须取消启动  
 Linphone on windows 设置里的AVPF选项默认是未启动的  
 
