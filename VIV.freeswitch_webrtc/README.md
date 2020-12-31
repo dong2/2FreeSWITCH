@@ -210,6 +210,11 @@ yum install coturn
 # 启动coturn
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
 (开放端口与freeswitch配置保持同步,通过的比特流速率1M=1024×1024)
+
+# stop
+ps aux | grep turnserver
+found process id，example：2059
+kill 2059
 ```
 
 6. 准备sipml5
@@ -245,6 +250,12 @@ openssl x509 -req -days 3650 -in cert.req -CA SSL_CA.pem -CAkey privkey.pem -CAs
 #openssl x509 -outform der -in SSL_Pub.pem -out SSL_Pub.der
 
 # 我直接用了webrtc2sip项目自带的密钥,最好是自己生成.
+
+# 转换成freeswitch格式的密钥
+cat SSL_Pub.pem SSL_Priv.pem > /usr/local/freeswitch/certs/wss.pem
+cat SSL_Pub.pem SSL_Priv.pem > /usr/local/freeswitch/certs/agent.pem
+cat SSL_CA.pem > /usr/local/freeswitch/certs/cafile.pem
+cat SSL_Pub.pem > /usr/local/freeswitch/certs/dtls-srtp.crt
 ```
 
 # 5. 注意：  
