@@ -61,7 +61,7 @@ wget https://libav.org/releases/libav-12.3.tar.xz
 tar xf libav-12.3.tar.xz
 cd libav-12.3
 # 进入 libav 源码目录下, 将 libavcodec/libx264.c 文件里面的 "x264_bit_depth" 全部替换为 "X264_BIT_DEPTH"，否则编译会报错。
-# scp libx264.c root@8.134.56.226:/usr/local/src/libav-12.3/libavcodec/
+# scp patch/libx264.c root@8.134.56.226:/usr/local/src/libav-12.3/libavcodec/
 ./configure --enable-shared --enable-libx264 --enable-gpl
 make
 make install
@@ -102,7 +102,7 @@ make install
 git clone -b v1.10.5 https://gitee.com/dong2/freeswitch.git freeswitch
 cd freeswitch
 # freeswitch v1.10.5 默认配置就可以支持语音会议，视频会议，但是fs对与sip终端的处理需要调整
-# scp switch_rtp.c root@8.134.56.226:/usr/local/src/freeswitch/src
+# scp patch/switch_rtp.c root@8.134.56.226:/usr/local/src/freeswitch/src
 ./bootstrap.sh -j
 # 屏蔽 signalwire
 # vi modules.conf
