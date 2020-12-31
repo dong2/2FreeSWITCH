@@ -209,7 +209,7 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 yum install coturn
 # 启动coturn
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
-(开放端口与freeswitch配置保持同步,通过的比特流速率1M=1024×1024)
+(开放端口与freeswitch配置保持同步,允许通过的比特流速率1M=1024×1024)
 
 # stop
 ps aux | grep turnserver
@@ -224,7 +224,7 @@ git clone https://gitee.com/dong2/sipml5.git
 mv sipml5 sip
 ```
 
-7. 启动freeswitch
+7. 启动freeswitch  
 freeswitch -nonat -nonatmap -nosql  
 
 此时，可以启动浏览器和linphone验证相关功能  
