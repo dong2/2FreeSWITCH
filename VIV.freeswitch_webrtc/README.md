@@ -164,7 +164,7 @@ vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
   <param name="listen-ip" value="0.0.0.0"/>
 ```
 
-vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口开得比较多)
+vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
 ```
   <!-- RTP port range -->
   <param name="rtp-start-port" value="10000"/> 
@@ -209,7 +209,7 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 yum install coturn
 # 启动coturn
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
-(开放端口与freeswitch配置保持同步,允许通过的比特流速率1M=1024×1024)
+(开放端口与freeswitch配置保持同步,默认端口16384~32768,允许通过的比特流速率1M=1024×1024)
 
 # stop
 ps aux | grep turnserver
@@ -231,10 +231,14 @@ freeswitch -nonat -nonatmap -nosql
 http://8.134.56.226/sip/call.htm  
 https://8.134.56.226/sip/call.htm  
 
+sipml5 ICE Servers:  
+stunman [{url:'stun:8.134.18.182:3478'}]  
+coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
+
 
 # 4. 生成openssl密钥
-```
-# https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
+参考https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh
+``` 
 # Uncomment next line to create "privkey.pem" and "SSL_CA.pem" files
 openssl req -days 3650 -out SSL_CA.pem -new -x509
 # Save privkey.pem and SSL_CA.pem
@@ -256,6 +260,10 @@ cat SSL_Pub.pem SSL_Priv.pem > /usr/local/freeswitch/certs/wss.pem
 cat SSL_Pub.pem SSL_Priv.pem > /usr/local/freeswitch/certs/agent.pem
 cat SSL_CA.pem > /usr/local/freeswitch/certs/cafile.pem
 cat SSL_Pub.pem > /usr/local/freeswitch/certs/dtls-srtp.crt
+# nginx密钥不用转换，直接拷贝过去就能用
+cat SSL_Pub.pem > /usr/local/nginx/conf/SSL_Pub.pem
+cat SSL_Priv.pem > /usr/local/nginx/conf/SSL_Priv.pem
+cat SSL_CA.pem > /usr/local/nginx/conf/SSL_CA.pem
 ```
 
 # 5. 注意：  
@@ -263,6 +271,30 @@ Linphone on android 默认的设置里有个AVPF选项必须取消启动
 Linphone on windows 设置里的AVPF选项默认是未启动的  
 
 # 6. reference
+1) freeswitch install  
 https://freeswitch.org/confluence/display/FREESWITCH/CentOS+7+and+RHEL+7  
 https://blog.csdn.net/jiaojian8063868/article/details/110929209  
 https://zhuanlan.zhihu.com/p/153395654  
+
+2) stun/turn  
+How to set up and configure your own TURN server using Coturn  
+https://gabrieltanner.org/blog/turn-server  
+Configure Your Own TURN/STUN Server  
+https://www.red5pro.com/docs/server/webrtc/turnstun/#step-by-step-install-on-an-ubuntu-linux-server  
+ICE server set up in Ubuntu (Coturn)  
+https://www.codetd.com/en/article/6415507  
+Installation SSL certificates and Coturn for OpenMeetings 5.0.0-M4 on CentOS 7-8.pdf  
+   
+3) fs Certificates  
+freeswitch使用自签证书,配置WSS  
+https://blog.csdn.net/weixin_42275389/article/details/89183536  
+self-signed-certs.sh  
+https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf  
+  
+4) fs wiki  
+https://freeswitch.org/confluence/display/FREESWITCH/Certificates  
+https://freeswitch.org/confluence/display/FREESWITCH/SIP+TLS  
+https://freeswitch.org/confluence/display/FREESWITCH/Debian+8+Jessie  
+https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates  
+  
+https://www.sslshopper.com/ssl-checker.html  

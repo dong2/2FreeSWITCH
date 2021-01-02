@@ -1,11 +1,10 @@
-----------------------------------------------------------------------------------  
-### 注意：
-1. Linphone on android 默认的设置里有个AVPF选项必须取消启动
-2. Linphone on windows 设置里的AVPF选项默认是未启动的
-
-
 ### 添加openssl key
 ```
+[root@freeswitch]wget http://files.freeswitch.org/downloads/ssl.ca-0.1.tar.gz
+[root@freeswitch]tar zxfv ssl.ca-0.1.tar.gz
+[root@freeswitch]cd ssl.ca-0.1/
+[root@freeswitch ssl.ca-0.1]perl -i -pe 's/md5/sha256/g' *.sh
+[root@freeswitch ssl.ca-0.1]perl -i -pe 's/1024/4096/g' *.sh
 [root@freeswitch ssl.ca-0.1]# openssl genrsa -des3 -out ca.key 4096
 Generating RSA private key, 4096 bit long modulus (2 primes)
 .................................................................................................................................................++++
@@ -120,16 +119,6 @@ drwxr-xr-x 2 root root  4096 12月 18 17:25 ca.db.certs
 
 [root@freeswitch ssl.ca-0.1]# freeswitch -nonat -nonatmap -nosql
 ```
-### 注意：
-1. firefox  
-sipml5(localhost) over ws 可以正常与linphone通话, sipml5放在异地用nginx加载，发现打不开音频设备，创建不了端点，咱不是专业折腾web前端的，直接放弃  
-
-2. chrome  
-sipml5 over ws/wss 在freeswitch v1.6版本出现个bug, 换成v1.10.5版就正常了.  
-[ERR] switch_rtp.c:3185 audio Handshake failure 1  
-[INFO] switch_rtp.c:3186 Changing audio DTLS state from HANDSHAKE to FAIL  
-新本版chrome, 在http下已没有麦克风和摄像头的操作权限，建议走https(wss)协议,
-
 
 ### reference
 1. fs Certificates  
