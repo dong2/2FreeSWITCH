@@ -130,7 +130,7 @@ systemctl disable firewalld
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 ```
 
-2. 配置freeswitch  
+2. 配置freeswitch
 vi /usr/local/freeswitch/conf/vars.xml
 
 ```
