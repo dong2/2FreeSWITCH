@@ -296,5 +296,4 @@ https://freeswitch.org/confluence/display/FREESWITCH/Certificates
 https://freeswitch.org/confluence/display/FREESWITCH/SIP+TLS  
 https://freeswitch.org/confluence/display/FREESWITCH/Debian+8+Jessie  
 https://freeswitch.org/confluence/display/FREESWITCH/WebRTC#WebRTC-InstallCertificates  
-  
 https://www.sslshopper.com/ssl-checker.html  
