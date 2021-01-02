@@ -130,7 +130,8 @@ systemctl disable firewalld
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 ```
 
-2. 配置freeswitch
+2. 配置freeswitch  
+  
 vi /usr/local/freeswitch/conf/vars.xml
 
 ```
@@ -226,7 +227,7 @@ mv sipml5 sip
 
 7. 启动freeswitch  
 freeswitch -nonat -nonatmap -nosql  
-  
+
 此时，可以启动浏览器和linphone验证相关功能  
 http://8.134.56.226/sip/call.htm  
 https://8.134.56.226/sip/call.htm  
