@@ -131,10 +131,8 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 ```
 
 2. 配置freeswitch  
-  
-vi /usr/local/freeswitch/conf/vars.xml
-
-```
+  vi /usr/local/freeswitch/conf/vars.xml
+  ```
   <X-PRE-PROCESS cmd="set" data="default_password=123456"/>
 
   <!-- Internal SIP Profile -->
@@ -148,36 +146,36 @@ vi /usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="set" data="external_sip_port=15080"/>
   <X-PRE-PROCESS cmd="set" data="external_tls_port=15081"/>
   <X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
-```
+  ```
   
-vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
-```
+  vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
+  ```
   <param name="ws-binding"  value=":5066"/>
   <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
   <param name="wss-binding" value=":7443"/>
-```
+  ```
   
-mv internal-ipv6.xml internal-ipv6.xml.removed  
-mv external-ipv6.xml external-ipv6.xml.removed  
+  mv internal-ipv6.xml internal-ipv6.xml.removed  
+  mv external-ipv6.xml external-ipv6.xml.removed  
   
-vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
-```
+  vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
+  ```
   <param name="listen-ip" value="0.0.0.0"/>
-```
+  ```
   
-vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
-```
+  vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
+  ```
   <!-- RTP port range -->
   <param name="rtp-start-port" value="10000"/> 
   <param name="rtp-end-port" value="10050"/> 
-```
+  ```
   
-vi /usr/local/freeswitch/conf/directory/default.xml
-```
-<param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
+  vi /usr/local/freeswitch/conf/directory/default.xml
+  ```
+  <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
 
-# delete ",${verto_contact(${dialed_user}@${dialed_domain})}"
-```
+  # delete ",${verto_contact(${dialed_user}@${dialed_domain})}"
+  ```
 3. 拷贝freeswitch密钥
 ```
 scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
