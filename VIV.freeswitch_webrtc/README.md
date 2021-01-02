@@ -148,29 +148,29 @@ vi /usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="set" data="external_tls_port=15081"/>
   <X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
 ```
-
+  
 vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
 ```
   <param name="ws-binding"  value=":5066"/>
   <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
   <param name="wss-binding" value=":7443"/>
 ```
-
+  
 mv internal-ipv6.xml internal-ipv6.xml.removed  
 mv external-ipv6.xml external-ipv6.xml.removed  
-
+  
 vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 ```
   <param name="listen-ip" value="0.0.0.0"/>
 ```
-
+  
 vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
 ```
   <!-- RTP port range -->
   <param name="rtp-start-port" value="10000"/> 
   <param name="rtp-end-port" value="10050"/> 
 ```
-
+  
 vi /usr/local/freeswitch/conf/directory/default.xml
 ```
 <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
@@ -226,15 +226,14 @@ mv sipml5 sip
 
 7. 启动freeswitch  
 freeswitch -nonat -nonatmap -nosql  
-
+  
 此时，可以启动浏览器和linphone验证相关功能  
 http://8.134.56.226/sip/call.htm  
 https://8.134.56.226/sip/call.htm  
-
+  
 sipml5 ICE Servers:  
 stunman [{url:'stun:8.134.18.182:3478'}]  
 coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
-
 
 # 4. 生成openssl密钥
 参考https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh
@@ -275,7 +274,7 @@ Linphone on windows 设置里的AVPF选项默认是未启动的
 https://freeswitch.org/confluence/display/FREESWITCH/CentOS+7+and+RHEL+7  
 https://blog.csdn.net/jiaojian8063868/article/details/110929209  
 https://zhuanlan.zhihu.com/p/153395654  
-
+  
 2) stun/turn  
 How to set up and configure your own TURN server using Coturn  
 https://gabrieltanner.org/blog/turn-server  
@@ -284,7 +283,7 @@ https://www.red5pro.com/docs/server/webrtc/turnstun/#step-by-step-install-on-an-
 ICE server set up in Ubuntu (Coturn)  
 https://www.codetd.com/en/article/6415507  
 Installation SSL certificates and Coturn for OpenMeetings 5.0.0-M4 on CentOS 7-8.pdf  
-   
+  
 3) fs Certificates  
 freeswitch使用自签证书,配置WSS  
 https://blog.csdn.net/weixin_42275389/article/details/89183536  
