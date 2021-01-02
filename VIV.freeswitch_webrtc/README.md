@@ -210,7 +210,7 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 yum install coturn
 # 启动coturn
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
-(开放端口与freeswitch配置保持同步,默认端口16384~32768,允许通过的比特流速率1M=1024×1024)
+(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小)
 
 # stop
 ps aux | grep turnserver
