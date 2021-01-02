@@ -209,12 +209,12 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 # 直接在线安装
 yum install coturn
 # 启动coturn
-turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test --cert=SSL_Pub.pem --pkey=SSL_Priv.pem CA-file=SSL_CA.pem
 (开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小)
 
 # stop
 ps aux | grep turnserver
-found process id，example：2059
+found process id，eg: 2059
 kill 2059
 ```
 
