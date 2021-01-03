@@ -1,4 +1,4 @@
-# 1. freeswitch快速安装，这在方式很多外设模块都没有
+# 1. freeswitch快速安装，这种方式很多外设模块都没有
 ```
 yum install -y https://files.freeswitch.org/repo/yum/centos-release/freeswitch-release-repo-0-1.noarch.rpm epel-release
 yum install -y freeswitch-config-vanilla freeswitch-lang-* #freeswitch-sounds-*
