@@ -237,7 +237,9 @@ stunman [{url:'stun:8.134.18.182:3478'}]
 coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
 
 # 4. 生成openssl密钥
-参考https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh
+参考  
+https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
+https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
 ``` 
 # Uncomment next line to create "privkey.pem" and "SSL_CA.pem" files
 openssl req -days 3650 -out SSL_CA.pem -new -x509
