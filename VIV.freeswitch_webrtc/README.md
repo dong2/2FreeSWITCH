@@ -183,8 +183,30 @@ vi /usr/local/freeswitch/conf/directory/default.xml
 scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
 # freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看VIV.freeswitch_webrtc/ssl.doc/README.md
 ```
+4. 安装coturn
+```
+# 直接在线安装
+yum install coturn
+# 启动coturn
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test (--cert=SSL_Pub.pem --pkey=SSL_Priv.pem CA-file=SSL_CA.pem)
+(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小)
 
-4. 安装nginx
+# stop
+ps aux | grep turnserver
+found process id，eg: 2059
+kill 2059
+```
+
+5. 准备sipml5 sipjs jssip
+```
+cd /home
+git clone https://gitee.com/dong2/sipml5.git
+git clone https://gitee.com/dong2/jssip-demos.git
+git clone https://gitee.com/dong2/portsip-webrtc-client.git
+git clone https://gitee.com/dong2/sipjs-examples.git
+```
+
+6. 安装nginx
 ```
 yum install gcc-c++ pcre pcre-devel zlib zlib-devel #openssl openssl-devel
 wget https://nginx.org/download/nginx-1.14.0.tar.gz
@@ -204,33 +226,12 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 /usr/local/nginx/sbin/nginx -s reload
 ```
 
-6. 安装coturn
-```
-# 直接在线安装
-yum install coturn
-# 启动coturn
-turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test (--cert=SSL_Pub.pem --pkey=SSL_Priv.pem CA-file=SSL_CA.pem)
-(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小)
-
-# stop
-ps aux | grep turnserver
-found process id，eg: 2059
-kill 2059
-```
-
-6. 准备sipml5
-```
-cd /home
-git clone https://gitee.com/dong2/sipml5.git
-mv sipml5 sip
-```
-
 7. 启动freeswitch  
 freeswitch -nonat -nonatmap -nosql  
 
 此时，可以启动浏览器和linphone验证相关功能  
-http://8.134.56.226/sip/call.htm  
-https://8.134.56.226/sip/call.htm  
+http://8.134.56.226/sipml5/call.htm  
+https://8.134.56.226/sipml5/call.htm  
   
 sipml5 ICE Servers:  
 stunman [{url:'stun:8.134.18.182:3478'}]  
