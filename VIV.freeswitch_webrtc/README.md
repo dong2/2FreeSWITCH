@@ -201,9 +201,6 @@ kill 2059
 ```
 cd /home
 git clone https://gitee.com/dong2/sipml5.git
-git clone https://gitee.com/dong2/jssip-demos.git
-git clone https://gitee.com/dong2/portsip-webrtc-client.git
-git clone https://gitee.com/dong2/sipjs-examples.git
 ```
 
 6. 安装nginx
