@@ -197,7 +197,7 @@ found process id，eg: 2059
 kill 2059
 ```
 
-5. 准备sipml5 sipjs jssip
+5. 准备sipml5
 ```
 cd /home
 git clone https://gitee.com/dong2/sipml5.git
