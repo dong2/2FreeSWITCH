@@ -235,9 +235,6 @@ stunman [{url:'stun:8.134.18.182:3478'}]
 coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
 
 # 4. 生成openssl密钥
-参考  
-https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
-https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
 ``` 
 # Uncomment next line to create "privkey.pem" and "SSL_CA.pem" files
 openssl req -days 3650 -out SSL_CA.pem -new -x509
@@ -287,9 +284,10 @@ Installation SSL certificates and Coturn for OpenMeetings 5.0.0-M4 on CentOS 7-8
   
 3) fs Certificates  
 freeswitch使用自签证书,配置WSS  
-https://blog.csdn.net/weixin_42275389/article/details/89183536  
-self-signed-certs.sh  
+https://blog.csdn.net/weixin_42275389/article/details/89183536   
 https://github.com/DoubangoTelecom/webrtc2sip/blob/master/documentation/technical-guide-1.0.pdf  
+https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
+https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
   
 4) fs wiki  
 https://freeswitch.org/confluence/display/FREESWITCH/Certificates  
