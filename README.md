@@ -22,5 +22,15 @@ FreeSWITCH的应用模型大抵遵循 接入 ---> 媒体处理 ---> 输出
 ...  
 ...
 
+## 5. 感谢
+https://freeswitch.com/  
+百问Freeswitch第三版.pdf  
+FreeSWITCH权威指南.pdf  
+FreeSwitch简要使用教程.pdf  
+FreeSWITCH: VoIP实战.pdf  
+
+
+
+
 
 
