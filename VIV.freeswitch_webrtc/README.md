@@ -236,6 +236,8 @@ sipml5 ICE Servers:
 stunman [{url:'stun:8.134.18.182:3478'}]  
 coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
 
+到目前为止freeswitch的webrtc模块还不能接入sip终端的视频(音频可以接入)，需要另外配置webrtc2sip网关或者MCU来实现,例如janux-gateway, bigbluebutton, licode等.  
+
 # 4. 生成openssl密钥
 ``` 
 # Uncomment next line to create "privkey.pem" and "SSL_CA.pem" files
