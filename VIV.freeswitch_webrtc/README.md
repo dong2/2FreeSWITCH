@@ -168,8 +168,8 @@ vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
 ```
   <!-- RTP port range -->
-  <param name="rtp-start-port" value="10000"/> 
-  <param name="rtp-end-port" value="10050"/> 
+  <param name="rtp-start-port" value="16384"/> 
+  <param name="rtp-end-port" value="32768"/> 
 ```
   
 vi /usr/local/freeswitch/conf/directory/default.xml
@@ -181,15 +181,17 @@ vi /usr/local/freeswitch/conf/directory/default.xml
 3. 拷贝freeswitch密钥
 ```
 scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
-# freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看VIV.freeswitch_webrtc/ssl.doc/README.md
+# freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看  
+https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
+https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
 ```
 4. 安装coturn
 ```
 # 直接在线安装
 yum install coturn
 # 启动coturn
-turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10050 --user=test:test123 -r test (--cert=SSL_Pub.pem --pkey=SSL_Priv.pem CA-file=SSL_CA.pem)
-(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小)
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem
+(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小, 可以不检测密钥，节约机器性能)
 
 # stop
 ps aux | grep turnserver
@@ -227,8 +229,8 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 freeswitch -nonat -nonatmap -nosql  
 
 此时，可以启动浏览器和linphone验证相关功能  
-http://8.134.56.226/sipml5/call.htm  
-https://8.134.56.226/sipml5/call.htm  
+http://8.134.18.182/sipml5/call.htm  
+https://8.134.18.182/sipml5/call.htm  
   
 sipml5 ICE Servers:  
 stunman [{url:'stun:8.134.18.182:3478'}]  
