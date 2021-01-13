@@ -159,6 +159,7 @@ vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
   
 mv internal-ipv6.xml internal-ipv6.xml.removed  
 mv external-ipv6.xml external-ipv6.xml.removed  
+mv external-ipv6 external-ipv6.removed
   
 vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 ```

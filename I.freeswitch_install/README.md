@@ -17,7 +17,7 @@ yum install -y git alsa-lib-devel autoconf automake bison broadvoice-devel bzip2
 # 
 cd /usr/local/src
 #git clone -b v1.6 https://github.com/signalwire/freeswitch.git freeswitch
-git clone -b v1.6 https://gitee.com/cnwz/freeswitch.git freeswitch
+git clone -b v1.6 https://gitee.com/dong2/freeswitch.git freeswitch
 cd /usr/local/src/freeswitch
 ./bootstrap.sh -j
 ./configure
