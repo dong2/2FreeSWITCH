@@ -186,27 +186,8 @@ scp -r freeswitch-v1.10.5/certs root@8.134.56.226:/usr/local/freeswitch
 https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
 https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
 ```
-4. 安装coturn
-```
-# 直接在线安装
-yum install coturn
-# 启动coturn
-turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem
-(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小, 可以不检测密钥，节约机器性能)
 
-# stop
-ps aux | grep turnserver
-found process id，eg: 2059
-kill 2059
-```
-
-5. 准备sipml5
-```
-cd /home
-git clone https://gitee.com/dong2/sipml5.git
-```
-
-6. 安装nginx
+4. 安装nginx
 ```
 yum install gcc-c++ pcre pcre-devel zlib zlib-devel #openssl openssl-devel
 wget https://nginx.org/download/nginx-1.14.0.tar.gz
@@ -224,6 +205,26 @@ scp ssl/SSL* root@8.134.56.226:/usr/local/nginx/conf
 /usr/local/nginx/sbin/nginx -s quit
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx -s reload
+```
+
+5. 安装coturn
+```
+# 直接在线安装
+yum install coturn
+# 启动coturn
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem
+(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小, 可以不检测密钥，节约机器性能)
+
+# stop
+ps aux | grep turnserver
+found process id，eg: 2059
+kill 2059
+```
+
+6. 准备sipml5
+```
+cd /home
+git clone https://gitee.com/dong2/sipml5.git
 ```
 
 7. 启动freeswitch  
