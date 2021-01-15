@@ -47,7 +47,7 @@ ln -sf /usr/local/freeswitch/bin/fs_cli /usr/bin/
  
 3) https://freeswitch.org/confluence/display/FREESWITCH/CentOS+7+and+RHEL+7
 
-4) 还是在debian上安装freeswitch更方便，默认就支持视频了,freeswitch-v1.10.x支持了webrtc  
+4) 还是在debian上安装freeswitch更方便，默认就支持视频了, freeswitch-v1.10.x支持了webrtc  
 https://freeswitch.org/confluence/display/FREESWITCH/Debian+9+Stretch
 
 
