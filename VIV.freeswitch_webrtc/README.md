@@ -91,10 +91,9 @@ cat SSL_CA.pem > /usr/local/nginx/conf/SSL_CA.pem
 ```
 
 5. 配置freeswitch ssl  
-  
+```  
 vi /usr/local/freeswitch/conf/vars.xml
 
-```
   <X-PRE-PROCESS cmd="set" data="default_password=123456"/>
 
   <!-- Internal SIP Profile -->
@@ -108,36 +107,32 @@ vi /usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="set" data="external_sip_port=15080"/>
   <X-PRE-PROCESS cmd="set" data="external_tls_port=15081"/>
   <X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
-```
   
 vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
-```
+
   <param name="ws-binding"  value=":5066"/>
   <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
   <param name="wss-binding" value=":7443"/>
-```
   
 mv internal-ipv6.xml internal-ipv6.xml.removed  
 mv external-ipv6.xml external-ipv6.xml.removed  
 mv external-ipv6 external-ipv6.removed
   
 vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
-```
+
   <param name="listen-ip" value="0.0.0.0"/>
-```
   
 vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
-```
+
   <!-- RTP port range -->
   <param name="rtp-start-port" value="16384"/> 
   <param name="rtp-end-port" value="32768"/> 
-```
   
 vi /usr/local/freeswitch/conf/directory/default.xml
-```
-<param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
 
-# delete ",${verto_contact(${dialed_user}@${dialed_domain})}"
+  <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
+
+# 删掉最后一段 ",${verto_contact(${dialed_user}@${dialed_domain})}"
 
 # freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看  
 https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
@@ -151,6 +146,7 @@ git clone https://gitee.com/dong2/sipml5.git
 ```
 
 7. 分别启动nginx, coturn，freeswitch    
+```
 /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf  
 
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem  
@@ -167,8 +163,10 @@ coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'
 
 到目前为止freeswitch的webrtc模块还不能接入sip终端的视频(音频可以接入)，需要另外配置webrtc2sip网关或者MCU来实现,例如janux-gateway, bigbluebutton, licode等.  
 freeswitch需要配置成bypass模式，参考：https://blog.csdn.net/wanglf1986/article/details/52162614  
+```
 
-8. 注意：  
+8. 注意：
+```
 Linphone on android 默认的设置里有个AVPF选项必须取消启动  
 Linphone on windows 设置里的AVPF选项默认是未启动的  
-
+```
