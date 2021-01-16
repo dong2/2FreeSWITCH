@@ -153,6 +153,8 @@ git clone https://gitee.com/dong2/sipml5.git
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem  
 
 freeswitch -nonat -nonatmap -nosql  
+重新配置freeswitch密钥需要删掉dtls-srtp.pem，启动会再次生成.
+rm -rf /usr/local/freeswitch/certs/dtls-srtp.pem
 
 此时，可以启动浏览器和linphone验证相关功能  
 http://8.134.18.182/sipml5/call.htm  
