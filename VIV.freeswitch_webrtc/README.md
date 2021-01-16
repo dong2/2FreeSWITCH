@@ -162,8 +162,14 @@ sipml5 ICE Servers:
 stunman [{url:'stun:8.134.18.182:3478'}]  
 coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
 
-到目前为止freeswitch的webrtc模块还不能接入sip终端的视频(音频可以接入)，需要另外配置webrtc2sip网关或者MCU来实现,例如janux-gateway, bigbluebutton, licode等.  
-freeswitch需要配置成bypass模式，参考：https://blog.csdn.net/wanglf1986/article/details/52162614  
+到目前为止freeswitch内置的webrtc已经支持
+webrtc与webrtc之间的音视频互通和音视频会议模式，
+sip设备与webrtc之间的音频互通和音频会议模式，
+但是sip设备与webrtc之间的视频是单通，web可以收到linphone的视频，linphone收不到webrtc的视频，
+zopier可以接入freeswtich webrtc视频会议，linphone接入是黑屏.
+
+freeswtich可以不用内置的webrtc，可以另外配置webrtc2sip网关或者MCU来实现视频互通和视频会议,例如janus-gateway, licode, bigbluebutton等.  
+我验证了janus-gateway，发现跟freeswitch内置的webrtc是一样的效果，仍然没有解决sip设备视频接入的问题,此问题留着慢慢调试.
 ```
 
 8. 注意：
