@@ -172,6 +172,8 @@ zopier可以接入freeswtich webrtc视频会议，linphone接入是黑屏.
 
 freeswtich可以不用内置的webrtc，可以另外配置webrtc2sip网关或者MCU来实现视频互通和视频会议,例如janus-gateway, licode, bigbluebutton等.  
 我验证了janus-gateway，发现跟freeswitch内置的webrtc是一样的效果，仍然没有解决sip设备视频接入的问题,此问题留着慢慢调试,折腾freeswitch必然是个长期的事情.
+
+freeswtich外置webrtc可以看看我的webrtc-list仓库，https://github.com/dong2/webrtc-list/blob/main/README.md
 ```
 
 8. 注意：
