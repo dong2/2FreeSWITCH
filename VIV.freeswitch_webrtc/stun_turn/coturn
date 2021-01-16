@@ -1,11 +1,9 @@
 1. Install coturn on CentOS/Ubuntu
 sudo yum install coturn/sudo apt-get install coturn
 
-systemctl stop coturn
-systemctl start coturn
-
 2. simple mode
-turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test
+turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem
+(开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小, 可以不检测密钥)
 
 # stop
 ps aux | grep turnserver
