@@ -88,6 +88,10 @@ cat SSL_Pub.pem > /usr/local/freeswitch/certs/dtls-srtp.crt
 cat SSL_Pub.pem > /usr/local/nginx/conf/SSL_Pub.pem
 cat SSL_Priv.pem > /usr/local/nginx/conf/SSL_Priv.pem
 cat SSL_CA.pem > /usr/local/nginx/conf/SSL_CA.pem
+
+# freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看  
+https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
+https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
 ```
 
 5. 配置freeswitch ssl  
@@ -134,9 +138,6 @@ vi /usr/local/freeswitch/conf/directory/default.xml
 
 # 删掉最后一段 ",${verto_contact(${dialed_user}@${dialed_domain})}"
 
-# freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看  
-https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
-https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
 ```
 
 6. 准备sipml5
