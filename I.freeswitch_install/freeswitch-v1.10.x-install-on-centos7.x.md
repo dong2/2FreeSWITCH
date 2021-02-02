@@ -1,4 +1,5 @@
 1. 安装依赖库
+```
 yum install vim git wget lrzsz
 yum install autoconf automake libtool openssl* libtiff* libjpeg*
 
@@ -25,8 +26,10 @@ yum-builddep -y freeswitch --skip-broken
 yum install -y yum-plugin-ovl centos-release-scl rpmdevtools
 
 # 此时如果不需要视频模块直接跳到第4步安装freeswitch即可
+```
 
 2. 补上mod_av模块
+```
 wget https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.xz
 tar xf nasm-2.14.02.tar.xz
 cd nasm-2.14.02
@@ -65,9 +68,10 @@ ln -sf /usr/local/lib/pkgconfig/libavutil.pc  /usr/lib64/pkgconfig/libavutil.pc
 ln -sf /usr/local/lib/pkgconfig/libswscale.pc  /usr/lib64/pkgconfig/libswscale.pc
 
 ldconfig
+```
 
 3. 补上mod_signalwire，大多数情况不需要mod_signalwire，不要轻易添加mod_signalwire.
-
+```
 yum install libatomic -y
 
 wget http://www.cmake.org/files/v3.15/cmake-3.15.2.tar.gz
@@ -88,8 +92,10 @@ cd signalwire-c
 cmake .
 make
 make install
+```
 
 4. 最后安装freeswitch
+```
 git clone -b v1.10.5 https://gitee.com/dong2/freeswitch.git freeswitch
 cd freeswitch
 # freeswitch v1.10.5 默认配置就可以支持语音会议，视频会议，但是fs对与sip终端的处理需要调整
