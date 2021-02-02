@@ -70,7 +70,7 @@ ln -sf /usr/local/lib/pkgconfig/libswscale.pc  /usr/lib64/pkgconfig/libswscale.p
 ldconfig
 ```
 
-3. 补上mod_signalwire，大多数情况不需要mod_signalwire，不要轻易添加mod_signalwire.
+3. 补上mod_signalwire，大多数情况不需要mod_signalwire.
 ```
 yum install libatomic -y
 
