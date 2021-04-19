@@ -92,6 +92,7 @@ cat SSL_CA.pem > /usr/local/nginx/conf/SSL_CA.pem
 # freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看  
 https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
 https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
+https://www.cnblogs.com/fangpengchengbupter/p/7999704.html  
 ```
 
 5. 配置freeswitch ssl  
