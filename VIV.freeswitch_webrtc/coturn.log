@@ -1,0 +1,57 @@
+[root@Ubuntu14 ~]# turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=10000 --max-port=10500 --user=test:test123 -r test
+0: : Config file found: /root/../etc/coturn/turnserver.conf
+0: : log file opened: /var/log/coturn/turnserver.log
+0: : 1024000 bytes per second allowed per session
+0: : Config file found: /root/../etc/coturn/turnserver.conf
+0: : 
+RFC 3489/5389/5766/5780/6062/6156 STUN/TURN Server
+Version Coturn-4.5.2 'dan Eider'
+0: : 
+Max number of open files/sockets allowed for this process: 65535
+0: : 
+Due to the open files/sockets limitation,
+max supported number of TURN Sessions possible is: 32500 (approximately)
+0: : 
+
+==== Show him the instruments, Practical Frost: ====
+
+0: : TLS supported
+0: : DTLS supported
+0: : DTLS 1.2 supported
+0: : TURN/STUN ALPN supported
+0: : Third-party authorization (oAuth) supported
+0: : GCM (AEAD) supported
+0: : OpenSSL compile-time version: OpenSSL 1.0.2k-fips  26 Jan 2017 (0x100020bf)
+0: : 
+0: : SQLite supported, default database location is /var/lib/coturn/turndb
+0: : Redis supported
+0: : PostgreSQL is not supported
+0: : MySQL is not supported
+0: : MongoDB is not supported
+0: : 
+0: : Default Net Engine version: 3 (UDP thread per CPU core)
+
+=====================================================
+
+0: : Domain name: 
+0: : Default realm: test
+0: : ERROR: 
+CONFIG ERROR: Empty cli-password, and so telnet cli interface is disabled! Please set a non empty cli-password!
+0: : WARNING: cannot find certificate file: turn_server_cert.pem (1)
+0: : WARNING: cannot start TLS and DTLS listeners because certificate file is not set properly
+0: : WARNING: cannot find private key file: turn_server_pkey.pem (1)
+0: : WARNING: cannot start TLS and DTLS listeners because private key file is not set properly
+0: : NO EXPLICIT LISTENER ADDRESS(ES) ARE CONFIGURED
+0: : ===========Discovering listener addresses: =========
+0: : Listener address to use: 127.0.0.1
+0: : Listener address to use: 172.18.112.52
+0: : =====================================================
+0: : Total: 1 'real' addresses discovered
+0: : =====================================================
+0: : NO EXPLICIT RELAY ADDRESS(ES) ARE CONFIGURED
+0: : ===========Discovering relay addresses: =============
+0: : Relay address to use: 172.18.112.52
+0: : =====================================================
+0: : Total: 1 relay addresses discovered
+0: : =====================================================
+[root@Ubuntu14 ~]# 
