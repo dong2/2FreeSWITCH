@@ -178,6 +178,8 @@ https://8.134.18.182/sipml5/call.htm
 sipml5 ICE Servers:  
 stunman [{url:'stun:8.134.18.182:3478'}]  
 coturn [{url:'stun:8.134.18.182:3478'},{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
+有了turn也可以不要stun  
+coturn [{url:'turn:8.134.18.182:3478', username:'test', credential:'test123'}]  
 
 到目前为止freeswitch内置的webrtc已经支持
 webrtc与webrtc之间的音视频互通和音视频会议模式，
@@ -195,4 +197,5 @@ freeswtich外置webrtc可以看看我的webrtc-list仓库，https://github.com/d
 ```
 Linphone on android 默认的设置里有个AVPF选项必须取消启动  
 Linphone on windows 设置里的AVPF选项默认是未启动的  
+fs, nginx, coturn 三个服务可以放在同一台服务器，或者coturn放在另外的服务器. nginx和fs最好放在同一台.  
 ```
