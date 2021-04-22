@@ -143,7 +143,8 @@ vi external.xml
     <param name="ext-rtp-ip" value="182.61.xx.25"/>
     <param name="ext-sip-ip" value="182.61.xx.25"/>
 
-4）stun
+4）stun 
+1.10.x版的stun在/usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="stun-set" data="external_rtp_ip=stun:182.61.xx.25:3478"/>
   <X-PRE-PROCESS cmd="stun-set" data="external_sip_ip=stun:182.61.xx.25:3478"/>  
   
