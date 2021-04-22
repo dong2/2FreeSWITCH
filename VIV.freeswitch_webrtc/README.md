@@ -133,6 +133,20 @@ vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口1638
   <param name="rtp-start-port" value="16384"/> 
   <param name="rtp-end-port" value="32768"/> 
   
+3) Configuring ext-rtp-ip
+cd /usr/local/freeswitch/conf/sip_profiles/
+vi internal.xml
+    <param name="ext-rtp-ip" value="182.61.xx.25"/>
+    <param name="ext-sip-ip" value="182.61.xx.25"/>
+
+vi external.xml
+    <param name="ext-rtp-ip" value="182.61.xx.25"/>
+    <param name="ext-sip-ip" value="182.61.xx.25"/>
+
+4）stun
+  <X-PRE-PROCESS cmd="stun-set" data="external_rtp_ip=stun:182.61.xx.25:3478"/>
+  <X-PRE-PROCESS cmd="stun-set" data="external_sip_ip=stun:182.61.xx.25:3478"/>  
+  
 vi /usr/local/freeswitch/conf/directory/default.xml
 
   <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
