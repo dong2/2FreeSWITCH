@@ -55,6 +55,21 @@ sudo yum install coturn/sudo apt-get install coturn
 turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem
 (开放端口与freeswitch/conf/autoload_configs/switch.conf.xml配置保持同步,允许通过的比特流速率1M=1024×1024不能太小, 可以不检测密钥)
 
+或者直接编辑配置文件
+listening-port=3478
+verbose
+fingerprint
+lt-cred-mech
+mobility
+relay-threads=10
+min-port=16384
+max-port=32768
+user=test:test123
+realm=test
+
+启动
+turnserver -o -c /etc/turnserver.conf
+
 # stop
 ps aux | grep turnserver
 found process id，example：2059
