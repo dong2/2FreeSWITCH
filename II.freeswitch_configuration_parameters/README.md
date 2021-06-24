@@ -1,26 +1,10 @@
 ```
 1) Change password
-cd /usr/local/freeswitch/conf
-vi vars.xml
+vi /usr/local/freeswitch/conf/vars.xml
     Change:  <X-PRE-PROCESS cmd="set" data="default_password=1234"/> {!!set it to something different!!}
-    Save and close (<Esc> :wq!)
-2) Delete IPv6  (必须)
-cd /usr/local/freeswitch/conf/sip_profiles
-mv internal-ipv6.xml internal-ipv6.xml.removed   {disables ipv6 support}
-mv external-ipv6.xml external-ipv6.xml.removed  {disables ipv6 support}
-3) Configuring ext-rtp-ip
-vi conf/autoload_configs/verto.conf.xml
-    <param name="ext-rtp-ip" value=""/>
+    Save and close (<Esc> :wq!)(默认密码会延时几秒才拨号)
 
-vi conf/sip_profiles/internal.xml (必须)
-    <param name="ext-rtp-ip" value="auto-nat"/>
-    <param name="ext-sip-ip" value="auto-nat"/>
-
-vi conf/sip_profiles/external.xml
-    <param name="ext-rtp-ip" value="auto-nat"/>
-    <param name="ext-sip-ip" value="auto-nat"/>
-
-4) Configuring SIP Port
+2) Configuring SIP Port
 vi /usr/local/freeswitch/conf/vars.xml
  <X-PRE-PROCESS cmd="set" data="internal_auth_calls=true"/>
   <X-PRE-PROCESS cmd="set" data="internal_sip_port=5060"/>
@@ -33,7 +17,30 @@ vi /usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="set" data="external_tls_port=5081"/>
   <X-PRE-PROCESS cmd="set" data="external_ssl_enable=false"/>
 
-5) Configuring loglevel
+3) Delete IPv6  (ipv4网络的话最好删掉ipv6配置)
+cd /usr/local/freeswitch/conf/sip_profiles
+mv internal-ipv6.xml internal-ipv6.xml.removed   {disables ipv6 support}
+mv external-ipv6.xml external-ipv6.xml.removed   {disables ipv6 support}
+mv external-ipv6 external-ipv6.removed           {disables ipv6 support}
+
+4) Configuring ext-rtp-ip
+vi conf/sip_profiles/internal.xml
+    <param name="ext-rtp-ip" value="auto-nat"/>
+    <param name="ext-sip-ip" value="auto-nat"/>
+
+vi conf/sip_profiles/external.xml
+    <param name="ext-rtp-ip" value="auto-nat"/>
+    <param name="ext-sip-ip" value="auto-nat"/>
+
+5) Configuring webrtc websocket
+vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
+```
+  <param name="ws-binding"  value=":5066"/>
+  <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
+  <param name="wss-binding" value=":7443"/>
+```
+
+6) Configuring loglevel
 vi /usr/local/freeswitch/conf/vars.xml
   <!-- various debug and defaults -->
   <X-PRE-PROCESS cmd="set" data="call_debug=false"/>
@@ -41,17 +48,21 @@ vi /usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="set" data="default_areacode=918"/>
   <X-PRE-PROCESS cmd="set" data="default_country=US"/>
 
-6) fs_cli.c:1673 main() Error Connecting []  (必须)
+7) fs_cli.c:1673 main() Error Connecting []  (改成"0.0.0.0"就可以在本地连接fs_cli来调试,fs_cli默认端口是8021)
 vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
 　　<param name="listen-ip" value="::"/>  改为 <param name="listen-ip" value="0.0.0.0"/>
 
-7) Configuring RTP port range
-conf/autoload_configs/switch.conf.xml
+8) Configuring RTP port range
+vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
 <!-- RTP port range -->
-<param name="rtp-start-port" value="10000"/>
-<param name="rtp-end-port" value="20000"/>
+<param name="rtp-start-port" value="16384"/>
+<param name="rtp-end-port" value="32768"/>
 
-8) Startup freeswitch
+9) Configuring ext-rtp-ip (verto不用可以不用管)
+vi conf/autoload_configs/verto.conf.xml
+    <param name="ext-rtp-ip" value=""/>
+
+10) Startup freeswitch
 cd /usr/local/freeswitch/bin
 ./freeswitch -nonat -nonatmap
 

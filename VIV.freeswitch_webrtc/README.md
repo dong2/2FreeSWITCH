@@ -5,7 +5,7 @@ systemctl disable firewalld
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 ```
 
-2. 安装nginx(先不启动)
+2. 安装nginx
 ```
 [root@freeswitch ~]# yum install gcc-c++ pcre pcre-devel zlib zlib-devel #openssl openssl-devel
 [root@freeswitch ~]# wget https://nginx.org/download/nginx-1.14.0.tar.gz
@@ -47,7 +47,7 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 [root@freeswitch ~]# /usr/local/nginx/sbin/nginx -s reload
 ```
 
-3. 安装coturn(先不启动)
+3. 安装coturn
 ```
 sudo yum install coturn/sudo apt-get install coturn
 
@@ -107,68 +107,34 @@ cat SSL_CA.pem > /usr/local/nginx/conf/SSL_CA.pem
 # freeswitch密钥格式跟nginx不一样，密钥生成和格式转换看  
 https://gitee.com/dong2/webrtc2sip/blob/master/self-signed-certs.sh  
 https://gitee.com/dong2/freeswitch/blob/master/docs/how_to_make_your_own_ca_correctly.txt  
+https://github.com/coturn/coturn/tree/master/examples/etc  
 https://www.cnblogs.com/fangpengchengbupter/p/7999704.html  
 ```
 
 5. 配置freeswitch ssl  
-```  
-vi /usr/local/freeswitch/conf/vars.xml
-
-  <X-PRE-PROCESS cmd="set" data="default_password=123456"/>
-
-  <!-- Internal SIP Profile -->
-  <X-PRE-PROCESS cmd="set" data="internal_auth_calls=true"/>
-  <X-PRE-PROCESS cmd="set" data="internal_sip_port=15060"/>
-  <X-PRE-PROCESS cmd="set" data="internal_tls_port=15061"/>
-  <X-PRE-PROCESS cmd="set" data="internal_ssl_enable=true"/>
-
-  <!-- External SIP Profile -->
-  <X-PRE-PROCESS cmd="set" data="external_auth_calls=false"/>
-  <X-PRE-PROCESS cmd="set" data="external_sip_port=15080"/>
-  <X-PRE-PROCESS cmd="set" data="external_tls_port=15081"/>
-  <X-PRE-PROCESS cmd="set" data="external_ssl_enable=true"/>
-  
+```
+1) Configuring webrtc websocket
 vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
 
   <param name="ws-binding"  value=":5066"/>
   <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
   <param name="wss-binding" value=":7443"/>
-  
-mv internal-ipv6.xml internal-ipv6.xml.removed  
-mv external-ipv6.xml external-ipv6.xml.removed  
-mv external-ipv6 external-ipv6.removed
-  
-vi /usr/local/freeswitch/conf/autoload_configs/event_socket.conf.xml
-
-  <param name="listen-ip" value="0.0.0.0"/>
-  
-vi /usr/local/freeswitch/conf/autoload_configs/switch.conf.xml (默认端口16384~32768开得比较多)
-
-  <!-- RTP port range -->
-  <param name="rtp-start-port" value="16384"/> 
-  <param name="rtp-end-port" value="32768"/> 
-  
-3) Configuring ext-rtp-ip
+    
+2) Configuring ext-rtp-ip
 cd /usr/local/freeswitch/conf/sip_profiles/
 vi internal.xml
     <param name="ext-rtp-ip" value="182.61.xx.25"/>
     <param name="ext-sip-ip" value="182.61.xx.25"/>
 
-vi external.xml
+vi external.xml (新版本可能有stun信息)
     <param name="ext-rtp-ip" value="182.61.xx.25"/>
     <param name="ext-sip-ip" value="182.61.xx.25"/>
 
-4）stun 
+3）stun 
 1.10.x版的stun在/usr/local/freeswitch/conf/vars.xml
   <X-PRE-PROCESS cmd="stun-set" data="external_rtp_ip=stun:182.61.xx.25:3478"/>
   <X-PRE-PROCESS cmd="stun-set" data="external_sip_ip=stun:182.61.xx.25:3478"/>  
   
-vi /usr/local/freeswitch/conf/directory/default.xml
-
-  <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
-
-# 删掉最后一段 ",${verto_contact(${dialed_user}@${dialed_domain})}"
-
 ```
 
 6. 准备sipml5
@@ -177,13 +143,12 @@ cd /home
 git clone https://gitee.com/dong2/sipml5.git
 ```
 
-7. 分别启动nginx, coturn，freeswitch    
+7. 分别启动nginx, coturn，freeswitch  
 ```
-/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf  
+1) /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf  
+2) turnserver -o -c /etc/turnserver.conf
+3) freeswitch -nonat -nonatmap -nosql  
 
-turnserver -o -a -f -v --mobility -m 10 --max-bps=1024000 --min-port=16384 --max-port=32768 --user=test:test123 -r test --cert=/usr/local/nginx/conf/SSL_Pub.pem --pkey=/usr/local/nginx/conf/SSL_Priv.pem CA-file=/usr/local/nginx/conf/SSL_CA.pem  
-
-freeswitch -nonat -nonatmap -nosql  
 重新配置freeswitch密钥需要删掉dtls-srtp.pem，启动会再次生成.
 rm -rf /usr/local/freeswitch/certs/dtls-srtp.pem
 
@@ -213,5 +178,5 @@ freeswtich外置webrtc可以看看我的webrtc-list仓库，https://github.com/d
 ```
 Linphone on android 默认的设置里有个AVPF选项必须取消启动  
 Linphone on windows 设置里的AVPF选项默认是未启动的  
-fs, nginx, coturn 三个服务可以放在同一台服务器，或者coturn放在另外的服务器. nginx和fs最好放在同一台.  
+fs, nginx, coturn 三个服务可以放在同一台服务器，或者或者不同的服务器, 但是密钥要配套, 我生成了一组10年期的密钥，放在conf目录.  
 ```
