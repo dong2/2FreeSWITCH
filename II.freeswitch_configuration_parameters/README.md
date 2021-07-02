@@ -34,11 +34,9 @@ vi conf/sip_profiles/external.xml
 
 5) Configuring webrtc websocket
 vi /usr/local/freeswitch/conf/sip_profiles/internal.xml
-```
   <param name="ws-binding"  value=":5066"/>
   <param name="tls-cert-dir" value="/usr/local/freeswitch/certs"/>
   <param name="wss-binding" value=":7443"/>
-```
 
 6) Configuring loglevel
 vi /usr/local/freeswitch/conf/vars.xml
