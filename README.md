@@ -28,6 +28,7 @@ https://freeswitch.com/
 FreeSWITCH权威指南.pdf  
 FreeSwitch简要使用教程.pdf  
 FreeSWITCH: VoIP实战.pdf  
+http://freeswitch.net.cn/73.html  
 
 
 
